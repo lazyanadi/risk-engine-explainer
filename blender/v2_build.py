@@ -220,9 +220,10 @@ def build_tiles(coll, variants, seed=11):
     tiles = L.collection("Hero_Tiles", coll)
     placed = []
 
-    def add(mesh_key, loc, rot3, scale):
+    def add(mesh_key, loc, rot3, scale, z=0.0, nrm=(0, 0, 1), kind="tile"):
         me = variants[mesh_key]
         ob = bpy.data.objects.new("t", me)
+        ob["zone"], ob["nrm"], ob["kind"] = float(z), tuple(nrm), kind  # used by the loop animation
         ob.matrix_world = Matrix.LocRotScale(loc, rot3.to_quaternion(), scale)
         tiles.objects.link(ob)
         placed.append(ob)
@@ -277,7 +278,7 @@ def build_tiles(coll, variants, seed=11):
                         mk = "emerald"
                 centre_pt = centre(t) + W * u + Nn * (core_top + h / 2 + lift)
                 rot = axes @ spin
-                add((hk, mk), centre_pt, rot, Vector((w, w, h / base_hr)))
+                add((hk, mk), centre_pt, rot, Vector((w, w, h / base_hr)), z, Nn, "float" if z >= 0.78 else "tile")
         rows += 1
         t += TILE_CELL / (centre(t + 1e-3) - centre(t - 1e-3)).length * 2e-3
 
@@ -300,7 +301,7 @@ def build_tiles(coll, variants, seed=11):
         ax = Vector((rnd.uniform(-1, 1), rnd.uniform(-1, 1), rnd.uniform(-1, 1))).normalized()
         rot = Matrix((T, W, N)).transposed() @ Matrix.Rotation(rnd.uniform(0, 1.2), 3, ax)
         mk = rnd.choices(["tileA", "tileB", "tileC", "emerald"], [0.38, 0.3, 0.14, 0.18])[0]
-        add(("cube", mk), loc, rot, Vector((s, s, s)))
+        add(("cube", mk), loc, rot, Vector((s, s, s)), z, N * side, "cloud")
     print("tiles placed", len(placed))
     return tiles
 

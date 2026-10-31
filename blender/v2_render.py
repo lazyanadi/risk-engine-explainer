@@ -205,6 +205,7 @@ def settings(x, y, samples, transparent):
 # asset -> collection, camera location, target, lens, backdrop?, poster size (w, h)
 SHOTS = {
     "hero": ("A_Hero", (0.6, -9.6, 4.6), (0.05, 0, -0.1), 46, False, (2400, 1650)),
+    "herobeauty": ("A_Hero", (0.6, -10.4, 4.9), (0.05, 0, -0.25), 46, True, (2400, 1500)),
     "rings": ("A_Rings", (2.9, -4.3, 3.9), (0, 0, 0.3), 50, True, (2400, 1800)),
     "plates": ("A_Plates", (2.6, -3.4, 2.4), (0, 0, 0.42), 55, True, (2400, 1800)),
     "bars": ("A_Bars", (2.7, -5.2, 2.9), (0, 0, 0.85), 50, True, (2400, 1800)),
@@ -232,28 +233,79 @@ def shoot(key, path, scale, samples):
     print("rendered", path)
 
 
-def turntable(frames=150, w=1280, h=720, samples=40):
-    """Hero spins once (seamless loop), frames to tmp, encoded by scripts/encode_turntable.ps1."""
+def hero_loop(frames=144, w=1600, h=1100, samples=64):
+    """Calm, seamless hero loop. The loop and the camera never move. Over one cycle:
+    a tall strip light circles the model once (light sweeps across the chrome), the tiles shimmer
+    (tiny lifts along their normals), ~70 tiles at the tiled patch lift off and settle back
+    (dissolve / assemble), the floating cubes drift on small closed paths and the green circuit
+    glow breathes. Every motion uses whole periods of the cycle, so frame N == frame 0.
+    Frames -> C:\\Jarvis\\tmp\\v2-loop (resumable); encoded by scripts/encode_loop.mjs."""
+    import random
+    from mathutils import Matrix
     coll, cam, tgt, lens, cyc, _ = SHOTS["hero"]
     L.only_collection(coll)
-    pivot = bpy.data.objects.get("RE2_TurnPivot") or bpy.data.objects.new("RE2_TurnPivot", None)
-    if not pivot.users_collection:
-        L.collection("Rig").objects.link(pivot)
-    c = camera("RE2_Cam", cam, tgt, lens)
-    c.parent = pivot
-    settings(w, h, samples, False)
-    scn.render.film_transparent = False
-    world_white = True
-    out = r"C:\Jarvis\tmp\v2-turntable"
+    lcs = bpy.context.view_layer.layer_collection.children
+    if lcs.get("Backdrop"):
+        lcs["Backdrop"].exclude = True   # transparent film; composited on white when encoding
+    if lcs.get("Rig"):
+        lcs["Rig"].exclude = False
+    camera("RE2_Cam", cam, tgt, lens)
+    settings(w, h, samples, True)
+    scn.cycles.seed = 7
+    scn.cycles.use_animated_seed = False
+    rnd = random.Random(3)
+    tiles = []
+    for o in bpy.data.collections["Hero_Tiles"].objects:
+        z, kind = o.get("zone", 0.0), o.get("kind", "tile")
+        n = Vector(o.get("nrm", (0, 0, 1))).normalized()
+        base = o.matrix_world.copy()
+        role = "still"
+        if kind == "cloud":
+            role = "drift"
+        elif 0.5 < z < 0.9 and rnd.random() < 0.13:
+            role = "lift"
+        elif z > 0.3:
+            role = "shimmer"
+        ax = Vector((rnd.uniform(-1, 1), rnd.uniform(-1, 1), rnd.uniform(-1, 1))).normalized()
+        side = n.cross(ax).normalized()
+        tiles.append((o, base, n, side, ax, role, rnd.uniform(0, math.tau), rnd.choice([1, 2]), rnd.uniform(0.08, 0.22)))
+    print("loop roles", {r: sum(1 for t in tiles if t[5] == r) for r in ("still", "shimmer", "lift", "drift")})
+    core = bpy.data.materials.get("RE2_Core")
+    core_b = next((n for n in core.node_tree.nodes if n.type == "BSDF_PRINCIPLED"), None) if core else None
+    out = os.environ.get("RE_LOOPDIR", r"C:\Jarvis\tmp\v2-loop")
     os.makedirs(out, exist_ok=True)
-    for f in range(frames):
+    only = os.environ.get("RE_FRAMES")
+    todo = [int(x) for x in only.split(",")] if only else range(frames)
+    for f in todo:
         pth = os.path.join(out, f"f{f:04d}.png")
         if os.path.exists(pth):
             continue
-        pivot.rotation_euler = (0, 0, math.tau * f / frames)
+        ph = math.tau * f / frames
+        # light sweep: a tall strip light on a circle around the model (one turn per loop)
+        a = ph + 0.6
+        emitter("RE2_Sweep", (0.45, 7.5), (7.5 * math.sin(a), -7.5 * math.cos(a), 2.2), 16.0, (1.0, 0.99, 0.97))
+        for (o, base, n, side, ax, role, phi, k, amp) in tiles:
+            if role == "still":
+                continue
+            if role == "shimmer":
+                o.matrix_world = Matrix.Translation(n * 0.006 * math.sin(k * ph + phi)) @ base
+            elif role == "lift":
+                s = (0.5 - 0.5 * math.cos(ph + phi)) ** 2.2        # mostly assembled, then lifts and returns
+                rot = Matrix.Rotation(s * 1.4, 4, ax)
+                loc = base.to_translation()
+                o.matrix_world = Matrix.Translation(loc + n * amp * s + side * 0.03 * s) @ rot @ Matrix.Translation(-loc) @ base
+            else:  # drift on a small closed loop
+                d = n * 0.025 * math.sin(ph + phi) + side * 0.02 * math.cos(ph + phi)
+                rot = Matrix.Rotation(0.15 * math.sin(ph + phi), 4, ax)
+                loc = base.to_translation()
+                o.matrix_world = Matrix.Translation(loc + d) @ rot @ Matrix.Translation(-loc) @ base
+        if core_b:
+            core_b.inputs["Emission Strength"].default_value = 3.0 * (1 + 0.3 * math.sin(2 * ph))
         scn.render.filepath = pth
         bpy.ops.render.render(write_still=True)
         print("frame", f, flush=True)
+    for (o, base, *_r) in tiles:
+        o.matrix_world = base
 
 
 rig()
@@ -265,6 +317,6 @@ if MODE == "preview":
 elif MODE == "final":
     for k in keys:
         shoot(k, os.path.join(OUTDIR, k + ".png"), 1.0, 256)
-elif MODE == "turntable":
-    turntable()
+elif MODE == "loop":
+    hero_loop()
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(L.HERE, "v2_render.blend"))

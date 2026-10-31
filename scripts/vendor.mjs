@@ -12,6 +12,7 @@ const files = [
   "examples/jsm/utils/BufferGeometryUtils.js",
   "examples/jsm/utils/SkeletonUtils.js",
   "examples/jsm/environments/RoomEnvironment.js",
+  "examples/jsm/libs/meshopt_decoder.module.js",
   "LICENSE",
 ];
 for (const f of files) {

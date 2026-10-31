@@ -7,40 +7,31 @@ v1 (dark wave intro -> bright silver main page) is done; see "v1 history" at the
 
 User feedback: "the 3D models look flat and low-fidelity; make it more extravagant and more detailed."
 
+### Change of direction (user, mid-way)
+The infinity loop must NOT move: no scroll-driven camera flight, no mouse tilt, no rotation of the hero.
+It stays fixed like the reference; the motion is a calm, seamless, pre-rendered Blender loop video
+(tiles shimmer, a light sweeps across the chrome, a few cubes lift off and settle), WebM + MP4,
+poster frame for first paint, reduced motion / failed video = poster. The hero has no live WebGL.
+Dropped with it: the pinned hero sequence, chapter captions, both interludes, the tile-dissolve shader.
+Section props stay live but only with a very gentle idle sway (no tilt, no parallax).
+
 ### Blender (all background mode: `blender -b ... --python ...`, never the open GUI window)
-- [ ] `blender/v2_textures.py`: procedural detail maps (numpy, in Blender): ribbon trim sheet
-      (panel lines, engraved circuit traces, micro grid) as normal / roughness / emissive-mask, coin engraving
-- [ ] `blender/v2_build.py`: hero v2
-  - [ ] thick Möbius loop, rounded-rect (bevelled) cross-section, real thickness, UVs, ~200k tris
-  - [ ] tile breakdown: bevelled tiles in a grid that spreads organically (noise mask), varying depth,
-        gradient solid -> inset grid -> raised tiles -> floating cubes (instanced, one mesh per variant)
-  - [ ] emerald glass cube cluster: bevelled glass cubes, inner faces, emissive edge accents, internal lattice
-  - [ ] props: machined rings + orbiting green sphere; stacked glass/metal plates; bar-chart sculpture; engraved coin + dice
-  - [ ] materials: layered PBR (metal base, clearcoat, roughness variation, edge wear), studio rig, grey gradient backdrop
-- [ ] `blender/v2_bake.py`: AO bakes for ribbon + props (Cycles GPU)
-- [ ] `blender/v2_export.py`: GLB export (GPU instancing for tiles) -> `npm run optimize` (gltf-transform, meshopt, textures <= 2048)
-- [ ] `blender/v2_render.py`: Cycles posters 2400 px (denoised) for hero + props, turntable WebM/MP4 < 8 MB
-- [ ] budgets: hero.glb <= 12 MB, each prop <= 4 MB
+- [x] `blender/v2_textures.py`: procedural trim sheet (panel lines, engraved circuit traces, brushed micro layer) normal / ORM / emissive
+- [x] `blender/v2_build.py`: thick bevelled Möbius loop (rounded-rect section, real thickness), organic tile breakdown
+      (flush grid -> stepped tiles -> floating cubes, glowing circuit core underneath), emerald glass cube cluster
+      with inner emissive crystals and a metal lattice; props: machined rings + orbiting sphere, plates, crisis bars, coin + dice
+- [x] `blender/v2_export.py`: vertex AO bake + GLB export; `npm run optimize` (instancing, meshopt, WebP textures)
+- [x] `blender/v2_render.py`: studio rig, Cycles posters 2400 px (`npm run posters`)
+- [ ] `RE_MODE=loop` hero loop frames (144 @ 24 fps, camera locked) -> `npm run loop` (WebM + MP4 < 8 MB)
 
 ### Site
-- [ ] Three.js: procedural studio environment (PMREM), new materials hooks, tile dissolve shader (break apart / reassemble)
-- [ ] scroll-driven cinematic camera around/through the hero across the main page (fixed backdrop layer)
-- [ ] per-section 3D scenes (rings in "Three ways", plates in "Report card", bars in "Crises", coin in footer),
-      lazy-loaded, parallax + mouse tilt, reduced-motion = static
-- [ ] intro: particles, light streaks, depth-of-field blur, chromatic fringe; word-by-word manifesto with scramble; smoother block/checker transition
-- [ ] KAIB-style detailing: hairline frame with corner ticks, animated counters, marquee strip, richer footer + final 3D piece, grain, desktop-only cursor
-- [ ] fallbacks: poster images / turntable video when WebGL fails
-- [ ] fix: bottom-right intro label unreadable over checker squares
-- [ ] fix: "Scroll To Start NN" stays visible after the page turns white -> becomes a section indicator
-- [ ] fix: empty gap under the hero buttons before section 01
-
-### Verify
-- [ ] Playwright screenshots 1440x900 + 390x844 of every stage, >= 4 review rounds, finals as `docs/shots/v2-*`
-- [ ] console clean, numbers match the original, frame-time probe, reduced motion, 390 px, no CDN
-- [ ] README, NOTES, C:\Jarvis\log.md
-
-### Progress log
-- (empty)
+- [x] procedural PMREM studio environment (`js/studio.js`), lazy section props on one shared canvas (`js/props3d.js`)
+- [x] hero: fixed loop video over the poster (`js/ui.js`), stats row under the buttons (no empty gap)
+- [x] intro: sparks/bokeh, light streaks, depth-of-field strands, chromatic fringe, word-by-word scramble manifesto, smoother blocks + shrinking-square wipe
+- [x] detailing: corner ticks, counters, marquee, section indicator, richer footer with the coin, grain, desktop cursor ring
+- [x] fixes: corner labels readable over the checker (chips), "Scroll To Start" retires when the page turns white, hero gap
+- [ ] verify (1440x900 + 390x844), >= 4 review rounds, `docs/shots/v2-*`, console, numbers, frame time, reduced motion
+- [ ] README, NOTES, log
 
 ---
 

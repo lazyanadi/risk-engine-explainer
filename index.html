@@ -31,7 +31,7 @@
     <div class="corner bl">How bad could a bad day get? <span class="rule" aria-hidden="true"></span></div>
     <div class="corner br">a guide to market risk</div>
     <div class="intro-lines">
-      <p class="line l1"><span class="sr-only">Every investor asks it.</span><span class="vis" aria-hidden="true" data-words>Every investor asks it.</span></p>
+      <p class="line l1"><span class="sr-only">Markets move every day. Most days, a little. Some days, a lot.</span><span class="vis" aria-hidden="true" data-manifesto>Markets move every day. | Most days, a little. | Some days, a lot.</span></p>
       <p class="line l2"><span class="sr-only">How bad could a bad day get?</span><span class="vis" aria-hidden="true" data-scramble>How bad could a bad day get?</span></p>
     </div>
   </div>
@@ -49,22 +49,32 @@
   </header>
 
   <main id="main" tabindex="-1">
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">A guide to market risk · no finance degree needed</p>
-        <h1>How bad could <span class="nowrap">a bad day</span> get?</h1>
-        <p class="lead">Every investor asks it. This engine answers it with a number, then checks whether that number can be trusted.</p>
-        <div class="btns">
-          <a class="pill dark" href="#intro-idea">Scroll to begin <span aria-hidden="true">↓</span></a>
-          <a class="pill" href="#play">Break the portfolio</a>
+    <section class="hero" id="hero" aria-label="Start">
+      <div class="hero-in">
+        <span class="ticks" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <div class="hero-copy">
+          <p class="eyebrow">A guide to market risk · no finance degree needed</p>
+          <h1>How bad could <span class="nowrap">a bad day</span> get?</h1>
+          <p class="lead">Every investor asks it. This engine answers it with a number, then checks whether that number can be trusted.</p>
+          <div class="btns">
+            <a class="pill dark" href="#intro-idea">Scroll to begin <span aria-hidden="true">↓</span></a>
+            <a class="pill" href="#play">Break the portfolio</a>
+          </div>
         </div>
+        <div class="hero-visual" id="heroVisual" data-webm="assets/v2/hero-loop.webm" data-mp4="assets/v2/hero-loop.mp4">
+          <img class="poster" src="assets/v2/hero-poster.webp" width="1600" height="1100" alt="A thick polished-silver Möbius loop shaped like an infinity sign. On one side its surface breaks into a grid of small metal tiles that float away, revealing glowing green circuit lines underneath; a cube of green glass cubes floats inside the other loop.">
+        </div>
+        <dl class="hero-stats">
+          <div><dt>Trading days</dt><dd><span data-num="4987" data-sep>4,987</span></dd></div>
+          <div><dt>Assets, 25% each</dt><dd><span data-num="4">4</span></dd></div>
+          <div><dt>Ways to estimate</dt><dd><span data-num="3">3</span></dd></div>
+          <div><dt>Confidence</dt><dd><span data-num="99">99</span>%</dd></div>
+        </dl>
+        <p class="hero-foot">Modelled and rendered in Blender (Cycles)</p>
       </div>
-      <div class="hero-visual" id="heroVisual">
-        <img class="poster" src="assets/hero-poster.webp" width="1800" height="1240" alt="A silver Möbius ribbon shaped like an infinity sign. Part of its surface breaks into small metal tiles, and a cluster of green glass cubes floats inside one loop.">
-        <canvas id="heroGL" aria-hidden="true"></canvas>
-      </div>
-      <p class="hero-foot">Model built in Blender · rendered live with WebGL</p>
     </section>
+
+    <div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Value at Risk</span><span>Expected Shortfall</span><span>Historical</span><span>Parametric</span><span>Monte Carlo</span><span>Kupiec test</span><span>Basel traffic light</span><span>Stress tests</span><span>Value at Risk</span><span>Expected Shortfall</span><span>Historical</span><span>Parametric</span><span>Monte Carlo</span><span>Kupiec test</span><span>Basel traffic light</span><span>Stress tests</span></div></div>
 
     <!-- 01 -->
     <section id="intro-idea" class="sec">
@@ -130,7 +140,7 @@
             <span class="acc-nums"><span><span data-count="2.12" data-dec="2">0</span>%<small>VaR</small></span><span class="es"><span data-count="3.15" data-dec="2">0</span>%<small>ES</small></span></span>
             <span class="circ" aria-hidden="true"></span></button></h3>
           <div class="acc-panel" id="acc-p1" role="region" aria-labelledby="acc-b1"><div class="acc-inner">
-            <img src="assets/prop-stack.webp" width="1200" height="900" alt="A stack of silver slabs, one per past day, with a green glass slab on top." loading="lazy">
+            <img src="assets/v2/plates.webp" width="2400" height="1800" alt="A stack of brushed-metal and green glass plates on polished posts, like pages of past days." loading="lazy">
             <p>Take every real day since 2007, sort them worst to best, and read off the line. No assumptions, but it only knows what already happened.</p>
           </div></div>
         </article>
@@ -140,7 +150,7 @@
             <span class="acc-nums"><span><span data-count="1.81" data-dec="2">0</span>%<small>VaR</small></span><span class="es"><span data-count="2.08" data-dec="2">0</span>%<small>ES</small></span></span>
             <span class="circ" aria-hidden="true"></span></button></h3>
           <div class="acc-panel" id="acc-p2" role="region" aria-labelledby="acc-b2"><div class="acc-inner">
-            <img src="assets/prop-rings.webp" width="1200" height="900" alt="Neat concentric silver rings around a green sphere: the tidy world a bell curve assumes." loading="lazy">
+            <div class="prop3d" data-model="rings"><img src="assets/v2/rings.webp" width="2400" height="1800" alt="Neat machined concentric rings around a green sphere, with a small green sphere in orbit: the tidy world a bell curve assumes." loading="lazy"></div>
             <p>Assume returns follow a bell curve, measure the average and spread, and the formula does the rest. Fast and elegant, and too optimistic about disasters.</p>
           </div></div>
         </article>
@@ -150,7 +160,7 @@
             <span class="acc-nums"><span><span data-count="2.03" data-dec="2">0</span>%<small>VaR</small></span><span class="es"><span data-count="2.73" data-dec="2">0</span>%<small>ES</small></span></span>
             <span class="circ" aria-hidden="true"></span></button></h3>
           <div class="acc-panel" id="acc-p3" role="region" aria-labelledby="acc-b3"><div class="acc-inner">
-            <img src="assets/prop-dice.webp" width="1200" height="900" alt="A cloud of tumbling metal dice; a few far-out orange ones are the rare shocks." loading="lazy">
+            <img src="assets/v2/coin.webp" width="2400" height="1800" alt="A silver coin engraved with a fat-tailed histogram whose worst bars are orange, with white dice and one orange die: chance, with rare shocks." loading="lazy">
             <p>Roll the dice thousands of times using a curve that allows rare shocks (Student-t), keeping the same correlations between assets.</p>
           </div></div>
         </article>
@@ -163,6 +173,7 @@
       <div class="sec-head"><span class="num">04</span><span class="label">Can you trust it?</span></div>
       <div class="split rev">
         <figure class="card viz">
+          <div class="prop3d plates3d" data-model="plates"><img src="assets/v2/plates.webp" width="2400" height="1800" alt="Stacked glass and metal plates: each plate a year of the report card." loading="lazy"></div>
           <canvas id="btCanvas" role="img" aria-label="Timeline from 2008 to 2025 with a tick for each day the loss broke the forecast."></canvas>
           <figcaption class="cap">Each tick is a trading day on which the loss was <i>worse</i> than the forecast. Placement is illustrative; the counts are the real results.</figcaption>
         </figure>
@@ -197,7 +208,7 @@
           <h2 class="reveal">Stress tests: replay the worst chapters.</h2>
           <p class="copy reveal">VaR describes a normal-bad day. A <b>stress test</b> asks about a historic catastrophe: "if 2008 happened again to my portfolio today, what would I lose?"</p>
         </div>
-        <div class="cols-r"><img class="stress-img" src="assets/prop-bars.webp" width="1200" height="900" alt="Silver bar chart on a plinth; the tallest bar, the worst crisis, glows orange." loading="lazy"></div>
+        <div class="cols-r"><div class="prop3d stress-img" data-model="bars"><img src="assets/v2/bars.webp" width="2400" height="1800" alt="A bar-chart sculpture on a dark plinth: four stacked bars sized by the four crisis losses; the tallest, 2022, is orange and breaks into floating cubes; a thin green glass blade marks a normal bad day." loading="lazy"></div></div>
       </div>
       <div class="bars" id="bars" role="table" aria-label="Portfolio loss in each historic crisis">
         <div class="bar" role="row" data-v="12.1"><div class="lab" role="rowheader"><b>Lehman collapse</b><span>Sep–Oct 2008</span></div><div class="track" aria-hidden="true"><i></i></div><em role="cell">−12.1%</em></div>
@@ -261,21 +272,36 @@
   <footer id="launch" class="foot">
     <canvas id="footWave" aria-hidden="true"></canvas>
     <div class="foot-inner">
-      <h2>Try the real engine.</h2>
-      <p>Live Yahoo Finance data, your own tickers and weights, the full backtest.</p>
-      <pre><code>cd C:\Jarvis\projects\risk-engine
+      <div class="foot-top">
+        <div>
+          <p class="eyebrow light">The end of the guide · the start of the engine</p>
+          <h2>Try the real engine.</h2>
+          <p class="foot-lead">Live Yahoo Finance data, your own tickers and weights, the full backtest.</p>
+          <pre><code>cd C:\Jarvis\projects\risk-engine
 .\.venv\Scripts\streamlit run app.py</code></pre>
+        </div>
+        <div class="prop3d foot-3d" data-model="coin"><img src="assets/v2/coin.webp" width="2400" height="1800" alt="A silver coin engraved with a fat-tailed histogram, next to dice; one die is orange." loading="lazy"></div>
+      </div>
+      <nav class="foot-index" aria-label="Sections, again">
+        <a href="#intro-idea"><span>01</span>The idea</a><a href="#var"><span>02</span>Two numbers</a><a href="#methods"><span>03</span>Three ways</a><a href="#backtest"><span>04</span>Report card</a>
+        <a href="#stress"><span>05</span>Crises</a><a href="#play"><span>06</span>Your turn</a><a href="#limits"><span>07</span>Honesty</a><a href="#inspiration"><span>08</span>Inspiration</a>
+      </nav>
       <div class="foot-rows">
         <div><span class="label">Risk warning</span><p>Educational tool, not investment advice. Past results don't predict the future. Value at Risk is not the most you can lose: on the days it is broken, losses can be far larger, as the stress tests above show.</p></div>
         <div><span class="label">Data</span><p>Equal-weight SPY, TLT, GLD, EEM, January 2007 to October 2026, Yahoo Finance daily prices. Charts on this page use seeded simulations for illustration; the method results are the engine's real output.</p></div>
       </div>
-      <p class="fine">RISK/ENGINE · <a href="#top">Back to top</a></p>
+      <div class="foot-mark" aria-hidden="true">RISK<i>/</i>ENGINE</div>
+      <p class="fine">RISK/ENGINE · 3D models made in Blender, procedurally · <a href="#top">Back to top</a></p>
     </div>
   </footer>
+  <div class="sec-ind" id="secInd" aria-hidden="true"><span id="secIndNum">00</span><i></i><span id="secIndLab">Overview</span></div>
 </div>
 
+<canvas id="fxGL" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
 <script src="js/explainer.js" defer></script>
+<script src="js/ui.js" defer></script>
 <script type="module" src="js/intro.js"></script>
-<script type="module" src="js/hero3d.js"></script>
+<script type="module" src="js/props3d.js"></script>
 </body>
 </html>

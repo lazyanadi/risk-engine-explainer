@@ -8,7 +8,9 @@
     },
     "scripts": {
         "vendor": "node scripts/vendor.mjs",
-        "serve": "python -m http.server 8137 --bind 127.0.0.1"
+        "serve": "python -m http.server 8137 --bind 127.0.0.1",
+        "optimize": "node scripts/optimize.mjs",
+        "posters": "node scripts/posters.mjs"
     },
     "keywords": [],
     "author": "",
