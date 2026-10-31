@@ -22,7 +22,7 @@ Section props stay live but only with a very gentle idle sway (no tilt, no paral
       with inner emissive crystals and a metal lattice; props: machined rings + orbiting sphere, plates, crisis bars, coin + dice
 - [x] `blender/v2_export.py`: vertex AO bake + GLB export; `npm run optimize` (instancing, meshopt, WebP textures)
 - [x] `blender/v2_render.py`: studio rig, Cycles posters 2400 px (`npm run posters`)
-- [ ] `RE_MODE=loop` hero loop frames (144 @ 24 fps, camera locked) -> `npm run loop` (WebM + MP4 < 8 MB)
+- [x] `RE_MODE=loop` hero loop frames (144 @ 24 fps, camera locked) -> `npm run loop`: WebM 2.06 MB, MP4 1.47 MB, 6.0 s, seam checked (last->first frame step = normal frame step)
 
 ### Site
 - [x] procedural PMREM studio environment (`js/studio.js`), lazy section props on one shared canvas (`js/props3d.js`)
@@ -30,8 +30,8 @@ Section props stay live but only with a very gentle idle sway (no tilt, no paral
 - [x] intro: sparks/bokeh, light streaks, depth-of-field strands, chromatic fringe, word-by-word scramble manifesto, smoother blocks + shrinking-square wipe
 - [x] detailing: corner ticks, counters, marquee, section indicator, richer footer with the coin, grain, desktop cursor ring
 - [x] fixes: corner labels readable over the checker (chips), "Scroll To Start" retires when the page turns white, hero gap
-- [ ] verify (1440x900 + 390x844), >= 4 review rounds, `docs/shots/v2-*`, console, numbers, frame time, reduced motion
-- [ ] README, NOTES, log
+- [x] verify (1440x900 + 390x844), 5 review rounds, `docs/shots/v2-*`, console clean, 13/13 numbers identical, frame time ok, reduced motion = poster
+- [x] README, NOTES, log
 
 ---
 
