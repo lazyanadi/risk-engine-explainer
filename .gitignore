@@ -7,3 +7,7 @@ Thumbs.db
 .env
 
 assets/*.png
+blender/renders/
+blender/out/
+blender/v2_render.blend
+blender/tex/ribbon_h.png
