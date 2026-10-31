@@ -10,8 +10,8 @@
   --ease:cubic-bezier(.2,.7,.2,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
-body{background:var(--white);color:var(--ink);font:400 17px/1.6 "InterV","Inter","Segoe UI",system-ui,sans-serif;overflow-x:hidden;font-feature-settings:"ss01","cv11"}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--white);color:var(--ink);font:400 17px/1.6 "InterV","Inter","Segoe UI",system-ui,sans-serif;overflow-x:clip;font-feature-settings:"ss01","cv11"}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%;height:auto}
 button{font:inherit;color:inherit}
@@ -68,7 +68,7 @@ html.no-intro .intro{display:none}
 .nav nav a:hover:after{transform:scaleX(1)}
 .nav-pills{display:flex;gap:8px}
 @media(max-width:1060px){.nav nav{display:none}}
-@media(max-width:1180px){.sec-ind{display:none}}
+@media(max-width:1180px){.sec-ind{display:none!important}}
 .marquee+.sec{padding-top:clamp(48px,5vw,72px)}
 
 /* pills + round arrows */

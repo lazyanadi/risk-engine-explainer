@@ -130,10 +130,10 @@ void main(){
   float lum = dot(src, vec3(0.3, 0.5, 0.2));
   vec3 bw = lum > 0.42 + 0.25 * (flick - 0.5) * (1.0 - chk) ? vec3(1.0) : CHAR;
   vec3 checker = mod(cell.x + cell.y, 2.0) < 1.0 ? vec3(1.0) : CHAR;
-  float toChecker = smoothstep(r - 0.12, r + 0.12, chk * 1.25);
+  float toChecker = smoothstep(r - 0.015, r + 0.015, chk * 1.25);   // each cell flips crisply at its own moment
   vec3 col = mix(bw, checker, toChecker);
   // each cell fades from the live image to its block colour at its own time
-  float cellPix = smoothstep(r * 0.7, r * 0.7 + 0.3, pix);
+  float cellPix = smoothstep(r * 0.8, r * 0.8 + 0.08, pix);
   col = mix(scene(frag), col, cellPix);
   // diagonal wipe: dark squares shrink to their centres
   float diag = 0.5 * (cc.x / uRes.x + 1.0 - cc.y / uRes.y);
