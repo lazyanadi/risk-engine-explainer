@@ -1,4 +1,4 @@
-/* Main-page hero: the Blender-made Moebius ribbon (assets/hero.glb), lit by a procedural
+﻿/* Main-page hero: the Blender-made Moebius ribbon (assets/hero.glb), lit by a procedural
    studio environment, slowly turning with time, pointer and scroll. The Blender render
    (assets/hero-poster.webp) stays visible until the first WebGL frame, and remains the
    fallback if WebGL or the model fails. */
@@ -32,7 +32,7 @@ function start() {
   camera.lookAt(0, 0, 0);
 
   const pivot = new THREE.Group(); scene.add(pivot);
-  const BASE = new THREE.Euler(0.32, -0.42, 0.14);
+  const BASE = new THREE.Euler(0.18, -0.3, 0.12);
 
   function size() {
     const r = wrap.getBoundingClientRect();
@@ -72,11 +72,13 @@ function start() {
     // centre and scale to a fixed size so camera framing does not depend on the export
     const box = new THREE.Box3().setFromObject(model), c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3());
     model.position.sub(c);
-    const holder = new THREE.Group(); holder.add(model); holder.scale.setScalar(6.4 / Math.max(s.x, s.y, s.z));
+    const holder = new THREE.Group(); holder.add(model); holder.scale.setScalar(7.4 / Math.max(s.x, s.y, s.z));
     pivot.add(holder);
     model.traverse(o => {
       if (!o.isMesh) return;
       const m = o.material;
+      m.anisotropy = 0; // exported from Blender, but needs tangents three.js does not have here (caused black patches)
+      m.side = THREE.FrontSide;
       if (/Silver/.test(m.name)) { m.color.set(0xd9dee6); m.metalness = 1; m.roughness = 0.2; m.envMapIntensity = 1.15; }
       if (/Tile/.test(m.name)) { m.color.set(0xc2c9d3); m.roughness = 0.32; }
       if (/Emerald/.test(m.name)) { m.color.set(0x169b5c); m.roughness = 0.06; m.metalness = 0; m.transmission = 0.6; m.thickness = 0.4; m.ior = 1.55; m.attenuationColor = new THREE.Color(0x0b5c36); m.attenuationDistance = 0.4; }

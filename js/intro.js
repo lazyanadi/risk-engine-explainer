@@ -1,4 +1,4 @@
-/* Intro: one full-screen fragment shader driven by scroll progress p (0..1).
+﻿/* Intro: one full-screen fragment shader driven by scroll progress p (0..1).
    p 0.00-0.20  glowing orange ribbon ("the market's daily wave") drifting on charcoal
    p 0.14-0.36  the ribbon blooms into a soft blurred orange field
    p 0.36-0.46  the field is sampled into big black/white blocks that flicker (glitch)
@@ -30,12 +30,12 @@ vec3 ribbon(vec2 uv, float bloom){
             + 0.018 * sin(uv.x * 6.1 + t * 2.4 + fi * 0.9)
             + (fi - 3.0) * 0.016 * (0.7 + 0.6 * sin(uv.x * 0.9 - t + fi));
     y -= 0.03 * uv.x;
-    float w = (0.010 + 0.042 * (0.5 + 0.5 * sin(uv.x * 1.1 + fi * 1.3 - t * 0.8))) * mix(1.0, 7.0, bloom);
+    float w = (0.004 + 0.03 * pow(0.5 + 0.5 * sin(uv.x * 1.1 + fi * 1.3 - t * 0.8), 2.0)) * mix(1.0, 9.0, bloom);
     float d = (uv.y - y) / w;
     float core = exp(-d * d);
     float edge = smoothstep(-1.6, 0.4, d) * exp(-d * d * 0.35); // brighter upper lip, dark fold below
     vec3 hot = mix(vec3(1.0, 0.24, 0.07), vec3(1.0, 0.72, 0.22), 0.5 + 0.5 * sin(uv.x * 1.7 + fi * 0.8 + t));
-    col += hot * (core * 0.30 + edge * 0.10);
+    col += hot * (core * 0.34 + edge * 0.12);
     dark += exp(-pow((uv.y - y + w * 1.4) / (w * 1.2), 2.0)) * 0.05;
   }
   float fade = smoothstep(1.25, 0.2, abs(uv.x * 0.6));
@@ -53,13 +53,13 @@ vec3 scene(vec2 frag){
 void main(){
   vec2 frag = gl_FragCoord.xy;
   if (uFoot > 0.5){ // footer: the plain ribbon, a bit lower and calmer
-    vec2 uv = (frag - vec2(0.5 * uRes.x, 0.36 * uRes.y)) / uRes.y;
-    gl_FragColor = vec4(CHAR + ribbon(uv * 1.15, 0.0) * 0.9, 1.0); return;
+    vec2 uv = (frag - vec2(0.5 * uRes.x, 0.5 * uRes.y)) / uRes.y;
+    gl_FragColor = vec4(CHAR + ribbon(uv * vec2(0.8, 0.55), 0.0), 1.0); return;
   }
   float pix = smoothstep(0.36, 0.40, uP);
   if (pix <= 0.0){ gl_FragColor = vec4(scene(frag), 1.0); return; }
-  float chk = smoothstep(0.44, 0.72, uP);
-  float wipe = smoothstep(0.70, 0.94, uP);
+  float chk = smoothstep(0.44, 0.70, uP);
+  float wipe = smoothstep(0.68, 0.88, uP);
   float n = floor(mix(9.0, 54.0, chk * chk));             // cells across the height
   float cs = uRes.y / n;
   vec2 cell = floor(frag / cs);
@@ -158,6 +158,9 @@ if (intro && !reduce) {
       l2.style.opacity = in2 * (1 - out2);
       if (in2 > 0 && out2 < 1) scramble(smooth(0.42, 0.58, p), time);
       pct.textContent = String(Math.round(p * 100)).padStart(2, "0");
+      // corner labels: light on the dark/orange phases, chips during the blocks, ink on white
+      intro.dataset.phase = p < 0.37 ? "dark" : p < 0.74 ? "blocks" : "light";
+      intro.style.setProperty("--corner-fade", String(1 - smooth(0.9, 0.99, p)));
     }
     requestAnimationFrame(frame);
   }

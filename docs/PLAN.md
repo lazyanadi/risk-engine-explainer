@@ -8,7 +8,7 @@ Source content: `../risk-engine/site/` (read only). Build here.
    (glitch) -> checkerboard that gets finer -> diagonal wipe to white. Corner labels pinned, "Scroll To Start".
    Two short lines reveal word by word / letter-scramble (aria-hidden visual copy, real text for screen readers).
 2. **Main page (KAIB spirit):** white page, thin page frame, near-black text, grey copy, hairlines,
-   pill buttons, round arrow buttons, grey rounded cards. Hero = Blender-made silver MÃ¶bius ribbon
+   pill buttons, round arrow buttons, grey rounded cards. Hero = Blender-made silver Möbius ribbon
    with a tile/pixel region and a green glass cube cluster, live in Three.js (poster PNG fallback).
 3. **Meaning of colour:** green = safe days / passes / calm; orange (the intro wave) = tail losses, danger.
 4. All risk-engine sections kept: idea, VaR/ES explorer, three methods (accordion), backtest,
