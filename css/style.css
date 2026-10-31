@@ -10,7 +10,7 @@
   --ease:cubic-bezier(.2,.7,.2,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
 body{background:var(--white);color:var(--ink);font:400 17px/1.6 "InterV","Inter","Segoe UI",system-ui,sans-serif;overflow-x:hidden;font-feature-settings:"ss01","cv11"}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%;height:auto}
@@ -85,14 +85,14 @@ html.no-intro .intro{display:none}
 
 /* ================= HERO (fixed loop, calm pre-rendered video) ================= */
 .hero{position:relative}
-.hero-in{position:relative;min-height:calc(100vh - 72px);min-height:calc(100svh - 72px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);grid-template-rows:1fr auto;align-items:center;column-gap:24px;padding:24px var(--pad) 0}
+.hero-in{position:relative;min-height:calc(100vh - 72px);min-height:calc(100svh - 72px);display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.4fr);grid-template-rows:1fr auto;align-items:center;column-gap:8px;padding:24px var(--pad) 0}
 .hero-copy{position:relative;z-index:2;max-width:560px}
 .eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);margin-bottom:26px}
 .eyebrow.light{color:#9aa0a6}
 h1{font-size:clamp(42px,4.7vw,74px);line-height:1.02;letter-spacing:-.035em;font-weight:700}
 .lead{font-size:19px;color:var(--grey);margin:26px 0 38px;max-width:30em}
 .btns{display:flex;flex-wrap:wrap;gap:12px}
-.hero-visual{position:relative;z-index:1;align-self:center;aspect-ratio:1600/1100;width:116%;margin-right:-10%;pointer-events:none}
+.hero-visual{position:relative;align-self:center;aspect-ratio:1600/1100;width:118%;margin:0 -9% 0 -9%;pointer-events:none}
 .hero-visual .poster,.hero-visual video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
 .hero-visual video{opacity:0;transition:opacity .6s var(--ease)}
 .hero-visual.playing video{opacity:1}
