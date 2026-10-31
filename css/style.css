@@ -1,0 +1,9 @@
+:root { --ink:#1c1f22; --muted:#7a8088; --line:#d9dce0; --accent:#0b6b3a; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:Inter, system-ui, sans-serif; color:var(--ink); background:#fff; }
+.nav { display:flex; justify-content:space-between; align-items:center; padding:20px 40px; border-bottom:1px solid var(--line); }
+.nav a { color:var(--ink); text-decoration:none; margin-left:32px; text-transform:uppercase; }
+.hero { padding:160px 40px; }
+.hero h1 { font-size:64px; margin:0 0 12px; }
+.hero p { color:var(--muted); }
+.pill { display:inline-block; margin-top:24px; padding:14px 24px; border:1px solid var(--line); border-radius:999px; color:var(--ink); text-decoration:none; }
