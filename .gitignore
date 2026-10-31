@@ -11,3 +11,4 @@ blender/renders/
 blender/out/
 blender/v2_render.blend
 blender/tex/ribbon_h.png
+__pycache__/
