@@ -1,4 +1,4 @@
-﻿/* Intro: one full-screen fragment shader driven by scroll progress p (0..1).
+/* Intro: one full-screen fragment shader driven by scroll progress p (0..1).
    p 0.00-0.20  glowing orange ribbon ("the market's daily wave") drifting on charcoal
    p 0.14-0.36  the ribbon blooms into a soft blurred orange field
    p 0.36-0.46  the field is sampled into big black/white blocks that flicker (glitch)
@@ -43,6 +43,7 @@ vec3 ribbon(vec2 uv, float bloom){
 }
 vec3 scene(vec2 frag){
   vec2 uv = (frag - 0.5 * uRes) / uRes.y;
+  uv.x *= max(1.0, 0.85 * uRes.y / uRes.x); // portrait screens: show more of the wave
   float bloom = smoothstep(0.12, 0.36, uP);
   vec3 c = CHAR + ribbon(uv * mix(1.0, 0.55, bloom), bloom);
   // blurred orange field

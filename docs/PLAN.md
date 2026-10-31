@@ -1,4 +1,4 @@
-﻿# Plan: RISK/ENGINE, remade (dark wave intro -> bright silver main page)
+# Plan: RISK/ENGINE, remade (dark wave intro -> bright silver main page)
 
 Source content: `../risk-engine/site/` (read only). Build here.
 
@@ -18,16 +18,16 @@ Source content: `../risk-engine/site/` (read only). Build here.
 - `index.html`, `css/style.css`, `js/intro.js` (shader), `js/hero3d.js` (Three.js), `js/explainer.js` (ported charts)
 - `vendor/three/` copied from `node_modules/three` by `npm run vendor` (no CDN)
 - `blender/build_hero.py` (hero + props, procedural bpy), `blender/render.py` (posters, card renders, GLB export)
-- `assets/hero.glb`, `assets/hero-poster.png`, `assets/prop-*.png|glb`
+- `assets/hero.glb`, `assets/hero-poster.webp`, `assets/prop-*.webp|glb`
 
 ## Status
 - [x] Blender hero + props, .blend saved, GLB + renders exported (see "Blender notes")
-- [ ] Page structure + styles
-- [ ] Intro shader + scroll choreography
-- [ ] Three.js hero
-- [ ] Ported charts (numbers checked against original)
-- [ ] Screenshots 1440x900 + 390x844, 3 fix rounds
-- [ ] README, NOTES, log
+- [x] Page structure + styles
+- [x] Intro shader + scroll choreography
+- [x] Three.js hero
+- [x] Ported charts (numbers checked against original)
+- [x] Screenshots 1440x900 + 390x844, 3 fix rounds
+- [x] README, NOTES, log
 
 ## Blender notes
 - Built first in the open Blender GUI via the MCP add-on socket. The GUI session crashed during
@@ -39,3 +39,10 @@ Source content: `../risk-engine/site/` (read only). Build here.
      (export now links objects into the active scene temporarily: no scene override, no crash)
   3. `blender -b --factory-startup --python blender/to_webp.py` -> PNG renders to WebP
   4. Re-render posters if geometry changes: `set RE_MODE=render` + step 2 command.
+
+## Done / next
+- Done: all of the above. Review rounds: r1 (hero 3D black patches from anisotropy, 4-line heading,
+  soft ribbon, corner labels on orange, wrapped readout, footer wave behind text), r2 (verified fixes),
+  r3 mobile (corner label wrap, small model, portrait wave zoom) + final shots in docs/shots.
+- Possible next: smaller hero.glb with Draco/meshopt; a Lenis-style smooth scroll (left out on purpose
+  for native scrolling and accessibility).

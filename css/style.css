@@ -1,4 +1,4 @@
-﻿/* RISK/ENGINE remake. Bright silver main page (KAIB-like calm) + dark wave intro (Infinite Field-like).
+/* RISK/ENGINE remake. Bright silver main page (calm corporate) + dark scroll-driven wave intro (see docs/NOTES.md).
    Green = safe / passes. Orange (the intro wave) = tail losses / danger. */
 @font-face{font-family:"InterV";src:url(../vendor/fonts/inter-latin-wght-normal.woff2) format("woff2");font-weight:100 900;font-display:swap}
 :root{
@@ -233,7 +233,7 @@ html.js .reveal.in{opacity:1;transform:none}
   .nav-pills .pill.sm{padding:7px 14px;font-size:13px}
   .corner{font-size:13px}.corner.tl{top:22px}.corner.tr{top:24px}.corner.bl{bottom:22px}.corner.br{bottom:22px}
   .corner .brand{font-size:16px}.rule{width:28px}
-  .corner.bl{max-width:48%}
+  .corner.bl{max-width:52%}.corner.bl .rule{display:none}
   .row,.foot-rows>div{grid-template-columns:1fr;gap:8px;padding:22px 0}
   .acc-btn{grid-template-columns:minmax(0,1fr) 44px;gap:10px 14px;padding:22px 0}
   .acc-n{display:none}
@@ -248,6 +248,8 @@ html.js .reveal.in{opacity:1;transform:none}
   .readouts small{font-size:10.5px}
   #histCanvas{height:260px}#pathsCanvas{height:230px}
   .lead{font-size:17px}
+  .hero-visual{width:128%;margin:0 -14%}
+  .btns .pill{padding:12px 22px}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
