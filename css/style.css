@@ -68,6 +68,8 @@ html.no-intro .intro{display:none}
 .nav nav a:hover:after{transform:scaleX(1)}
 .nav-pills{display:flex;gap:8px}
 @media(max-width:1060px){.nav nav{display:none}}
+@media(max-width:1180px){.sec-ind{display:none}}
+.marquee+.sec{padding-top:clamp(48px,5vw,72px)}
 
 /* pills + round arrows */
 .pill{display:inline-flex;align-items:center;gap:10px;padding:13px 26px;border:1px solid var(--line2);border-radius:99px;background:#fff;
@@ -80,8 +82,6 @@ html.no-intro .intro{display:none}
 .circ{flex:none;width:56px;height:56px;border-radius:50%;border:1px solid var(--line2);display:grid;place-items:center;background:rgba(255,255,255,.5);transition:transform .35s var(--ease),background .25s,border-color .25s}
 .circ:before{content:"";width:9px;height:9px;border-top:1.5px solid var(--ink);border-right:1.5px solid var(--ink);transform:translateX(-2px) rotate(45deg)}
 
-/* ================= 3D overlay for the section props ================= */
-#fxGL{position:fixed;inset:0;width:100vw;height:100vh;z-index:35;pointer-events:none}
 
 /* ================= HERO (fixed loop, calm pre-rendered video) ================= */
 .hero{position:relative}
@@ -93,7 +93,7 @@ h1{font-size:clamp(42px,4.7vw,74px);line-height:1.02;letter-spacing:-.035em;font
 .lead{font-size:19px;color:var(--grey);margin:26px 0 38px;max-width:30em}
 .btns{display:flex;flex-wrap:wrap;gap:12px}
 .hero-visual{position:relative;z-index:1;align-self:center;aspect-ratio:1600/1100;width:116%;margin-right:-10%;pointer-events:none}
-.hero-visual .poster,.hero-visual video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.hero-visual .poster,.hero-visual video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
 .hero-visual video{opacity:0;transition:opacity .6s var(--ease)}
 .hero-visual.playing video{opacity:1}
 .hero-stats{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
@@ -119,18 +119,20 @@ h1{font-size:clamp(42px,4.7vw,74px);line-height:1.02;letter-spacing:-.035em;font
 @keyframes marq{to{transform:translateX(-50%)}}
 
 /* section indicator (bottom left, inside the frame) */
-.sec-ind{position:fixed;left:calc((100vw - var(--frame)) / 2 + var(--pad));bottom:22px;z-index:38;display:flex;align-items:center;gap:12px;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);
-  background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:99px;padding:7px 14px;opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease),transform .4s var(--ease);pointer-events:none}
-.sec-ind.on{opacity:1;transform:none}
-.sec-ind i{width:22px;height:1px;background:currentColor;opacity:.5}
+.sec-ind{position:fixed;left:calc((100vw - var(--frame)) / 4 - 9px);top:50%;z-index:38;display:flex;align-items:center;gap:12px;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink2);
+  writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);opacity:0;transition:opacity .4s var(--ease);pointer-events:none;white-space:nowrap}
+.sec-ind.on{opacity:1}
+.sec-ind i{width:1px;height:22px;background:currentColor;opacity:.5}
 .sec-ind #secIndNum{font-variant-numeric:tabular-nums;color:var(--green)}
 .sec-ind.flip #secIndLab{animation:flip .5s var(--ease)}
-@keyframes flip{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes flip{from{opacity:0}to{opacity:1}}
 
-/* 3D prop windows: the Blender poster shows until the live model draws over it */
+/* prop cards: Cycles renders with a very slow light sheen (none with reduced motion) */
 .prop3d{position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,#f4f5f7,#dcdfe4);aspect-ratio:4/3}
-.prop3d img{width:100%;height:100%;object-fit:cover;transition:opacity .8s var(--ease)}
-.prop3d.is-live img{opacity:0}
+.prop3d img{width:100%;height:100%;object-fit:cover;animation:breathe 16s ease-in-out infinite alternate}
+.prop3d:after{content:"";position:absolute;inset:-20%;pointer-events:none;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.28) 50%,transparent 60%);transform:translateX(-70%);animation:sheen 11s cubic-bezier(.45,0,.2,1) infinite;mix-blend-mode:soft-light}
+@keyframes breathe{from{transform:scale(1)}to{transform:scale(1.025)}}
+@keyframes sheen{0%,55%{transform:translateX(-70%)}100%{transform:translateX(70%)}}
 .acc-inner .prop3d{margin-bottom:30px}
 .plates3d{aspect-ratio:16/9;margin-bottom:18px;border-radius:14px}
 .foot-3d{background:radial-gradient(70% 70% at 50% 40%,#3a3d42,#1d1f22);aspect-ratio:1/1;max-width:440px;width:100%;justify-self:end}
@@ -141,7 +143,6 @@ h1{font-size:clamp(42px,4.7vw,74px);line-height:1.02;letter-spacing:-.035em;font
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 #cursor{position:fixed;left:-14px;top:-14px;width:28px;height:28px;border:1px solid #fff;border-radius:50%;z-index:90;pointer-events:none;mix-blend-mode:difference;transition:width .25s var(--ease),height .25s var(--ease),left .25s var(--ease),top .25s var(--ease)}
 #cursor.big{width:56px;height:56px;left:-28px;top:-28px}
-html.no-webgl #fxGL{display:none}
 
 /* ================= SECTIONS ================= */
 .sec{padding:clamp(64px,8vw,112px) var(--pad) 0}
@@ -266,7 +267,7 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px var(-
 .foot-index a{padding:16px 0;border-bottom:1px solid rgba(255,255,255,.18);font-size:15px;color:#e6e8ea;display:flex;gap:14px;transition:color .2s}
 .foot-index a span{color:#80868d;font-size:12px;font-variant-numeric:tabular-nums;padding-top:3px}
 .foot-index a:hover{color:#fff}
-.foot-mark{font-weight:800;letter-spacing:.06em;font-size:clamp(46px,12.5vw,190px);line-height:.9;margin-top:56px;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.28);white-space:nowrap;overflow:hidden;user-select:none}
+.foot-mark{font-weight:800;letter-spacing:.06em;font-size:clamp(40px,10.6vw,160px);line-height:.9;margin-top:56px;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.28);white-space:nowrap;overflow:hidden;user-select:none}
 .foot-mark i{font-style:normal;-webkit-text-stroke:1px var(--orange)}
 .foot-inner>p{color:#c4c8cd;margin-bottom:28px;max-width:34em}
 .foot pre{display:inline-block;max-width:100%;overflow-x:auto;padding:20px 24px;border:1px solid rgba(255,255,255,.18);border-radius:16px;background:rgba(20,20,20,.7);color:#fff;font-size:14px}
@@ -322,7 +323,6 @@ html.js .reveal.in{opacity:1;transform:none}
   h1{font-size:40px}
   .lead{margin:16px 0 22px}
   .eyebrow{margin-bottom:16px;font-size:11.5px}
-  .sec-ind{left:16px;bottom:14px;font-size:11px}
   .ticks{display:none}
   .btns .pill{padding:12px 22px}
 }

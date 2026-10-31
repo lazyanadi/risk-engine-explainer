@@ -14,9 +14,6 @@
   document.documentElement.classList.add("js");
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("no-intro");
 </script>
-<script type="importmap">
-{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/addons/" } }
-</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip the intro</a>
@@ -150,7 +147,7 @@
             <span class="acc-nums"><span><span data-count="1.81" data-dec="2">0</span>%<small>VaR</small></span><span class="es"><span data-count="2.08" data-dec="2">0</span>%<small>ES</small></span></span>
             <span class="circ" aria-hidden="true"></span></button></h3>
           <div class="acc-panel" id="acc-p2" role="region" aria-labelledby="acc-b2"><div class="acc-inner">
-            <div class="prop3d" data-model="rings"><img src="assets/v2/rings.webp" width="2400" height="1800" alt="Neat machined concentric rings around a green sphere, with a small green sphere in orbit: the tidy world a bell curve assumes." loading="lazy"></div>
+            <div class="prop3d"><img src="assets/v2/rings.webp" width="2400" height="1800" alt="Neat machined concentric rings around a green sphere, with a small green sphere in orbit: the tidy world a bell curve assumes." loading="lazy"></div>
             <p>Assume returns follow a bell curve, measure the average and spread, and the formula does the rest. Fast and elegant, and too optimistic about disasters.</p>
           </div></div>
         </article>
@@ -173,7 +170,7 @@
       <div class="sec-head"><span class="num">04</span><span class="label">Can you trust it?</span></div>
       <div class="split rev">
         <figure class="card viz">
-          <div class="prop3d plates3d" data-model="plates"><img src="assets/v2/plates.webp" width="2400" height="1800" alt="Stacked glass and metal plates: each plate a year of the report card." loading="lazy"></div>
+          <div class="prop3d plates3d"><img src="assets/v2/plates.webp" width="2400" height="1800" alt="Stacked glass and metal plates: each plate a year of the report card." loading="lazy"></div>
           <canvas id="btCanvas" role="img" aria-label="Timeline from 2008 to 2025 with a tick for each day the loss broke the forecast."></canvas>
           <figcaption class="cap">Each tick is a trading day on which the loss was <i>worse</i> than the forecast. Placement is illustrative; the counts are the real results.</figcaption>
         </figure>
@@ -208,7 +205,7 @@
           <h2 class="reveal">Stress tests: replay the worst chapters.</h2>
           <p class="copy reveal">VaR describes a normal-bad day. A <b>stress test</b> asks about a historic catastrophe: "if 2008 happened again to my portfolio today, what would I lose?"</p>
         </div>
-        <div class="cols-r"><div class="prop3d stress-img" data-model="bars"><img src="assets/v2/bars.webp" width="2400" height="1800" alt="A bar-chart sculpture on a dark plinth: four stacked bars sized by the four crisis losses; the tallest, 2022, is orange and breaks into floating cubes; a thin green glass blade marks a normal bad day." loading="lazy"></div></div>
+        <div class="cols-r"><div class="prop3d stress-img"><img src="assets/v2/bars.webp" width="2400" height="1800" alt="A bar-chart sculpture on a dark plinth: four stacked bars sized by the four crisis losses; the tallest, 2022, is orange and breaks into floating cubes; a thin green glass blade marks a normal bad day." loading="lazy"></div></div>
       </div>
       <div class="bars" id="bars" role="table" aria-label="Portfolio loss in each historic crisis">
         <div class="bar" role="row" data-v="12.1"><div class="lab" role="rowheader"><b>Lehman collapse</b><span>Sep–Oct 2008</span></div><div class="track" aria-hidden="true"><i></i></div><em role="cell">−12.1%</em></div>
@@ -280,7 +277,7 @@
           <pre><code>cd C:\Jarvis\projects\risk-engine
 .\.venv\Scripts\streamlit run app.py</code></pre>
         </div>
-        <div class="prop3d foot-3d" data-model="coin"><img src="assets/v2/coin.webp" width="2400" height="1800" alt="A silver coin engraved with a fat-tailed histogram, next to dice; one die is orange." loading="lazy"></div>
+        <div class="prop3d foot-3d"><img src="assets/v2/coin.webp" width="2400" height="1800" alt="A silver coin engraved with a fat-tailed histogram, next to dice; one die is orange." loading="lazy"></div>
       </div>
       <nav class="foot-index" aria-label="Sections, again">
         <a href="#intro-idea"><span>01</span>The idea</a><a href="#var"><span>02</span>Two numbers</a><a href="#methods"><span>03</span>Three ways</a><a href="#backtest"><span>04</span>Report card</a>
@@ -297,11 +294,9 @@
   <div class="sec-ind" id="secInd" aria-hidden="true"><span id="secIndNum">00</span><i></i><span id="secIndLab">Overview</span></div>
 </div>
 
-<canvas id="fxGL" aria-hidden="true"></canvas>
 <div class="grain" aria-hidden="true"></div>
 <script src="js/explainer.js" defer></script>
 <script src="js/ui.js" defer></script>
 <script type="module" src="js/intro.js"></script>
-<script type="module" src="js/props3d.js"></script>
 </body>
 </html>

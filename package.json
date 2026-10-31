@@ -10,7 +10,8 @@
         "vendor": "node scripts/vendor.mjs",
         "serve": "python -m http.server 8137 --bind 127.0.0.1",
         "optimize": "node scripts/optimize.mjs",
-        "posters": "node scripts/posters.mjs"
+        "posters": "node scripts/posters.mjs",
+        "loop": "node scripts/encode_loop.mjs"
     },
     "keywords": [],
     "author": "",
@@ -21,6 +22,7 @@
         "three": "^0.187.0"
     },
     "devDependencies": {
-        "@gltf-transform/cli": "^4.5.1"
+        "@gltf-transform/cli": "^4.5.1",
+        "sharp": "^0.35.5"
     }
 }
