@@ -87,3 +87,12 @@ The method cards still show 2.12/3.15, 1.81/2.08, 2.03/2.73 (VaR/ES %) and the s
   label and the custom cursor ring were removed; the section-01 fan chart is scaled to fill its card.
 - Footer is a full-width dark band with the coin on dark, a solid wordmark (the outlined one showed stroke
   artefacts where letter outlines overlap), brighter small text, and a generic `cd risk-engine` / `streamlit run app.py`.
+
+## v4 hero (user request)
+- Cross-section changed from a thin flat band to a thick square (rounded corners), so the loop reads as a bold
+  square bar twisting in an infinity shape; tiles cover all four faces and the scatter wave affects every face.
+- Richer surface: engraved seam grid at the tile pitch, satin grain, anisotropy, per-tile tint/roughness, deeper
+  blue-grey undersides. An ambient-occlusion shader node was tried for gap shading but tripled the render time;
+  Cycles' real bounce light already darkens the gaps, so it is off by default (`RE_AO=1` turns it on).
+- Fixed a bug where the hero video looked dark navy: the poster stayed under the video and both used a multiply
+  blend, so colours were multiplied twice.

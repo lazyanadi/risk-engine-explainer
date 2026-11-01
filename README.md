@@ -10,10 +10,10 @@ opens in the dark and ends in the light:
    in cell by cell, a checkerboard that refines smoothly, and a diagonal wipe in which every dark square
    shrinks away to the white main page.
 2. **Main page**: white, wide (frame up to 1760 px), hairline rows with corner ticks, pill buttons, round arrow
-   buttons, grey rounded cards. The hero is a wide, thin **satin-silver Möbius loop made in Blender whose whole
-   surface is a fine grid of tiles**. It stays fixed in place; a calm, seamless pre-rendered video plays on it: a
-   scatter wave travels once round the loop every 7 seconds, pushing tiles out to different depths (a few lift off)
-   and letting them settle back into a smooth surface. Under the buttons: a row of counters, then a marquee strip.
+   buttons, grey rounded cards. The hero is a **thick square-section bar twisting through an infinity shape, made in
+   Blender, with every face covered by a fine tile grid**. It stays fixed in place; a calm, seamless 6-second video
+   plays on it: a scatter wave travels once round the loop, pushing tiles on all four faces out to different depths
+   (a few lift off) and letting them settle back flush. Under the buttons: a row of counters, then a marquee strip.
 3. **All eight original sections** with their text and interactive charts (numbers identical to the original).
    Every picture is a different Blender object, used once: stacked plates (Historical), machined rings
    (Parametric), dice cloud (Monte Carlo), traffic light (Report card), crisis bars (Crises), four asset pillars
@@ -40,7 +40,7 @@ Open http://127.0.0.1:8137/ . Everything is local; there are no CDN requests.
 | Intro shader | `js/intro.js` | One fragment shader driven by scroll progress; also draws the calm wave in the footer. |
 | Page details | `js/ui.js` | Hero loop video (with poster fallback), counters, section indicator, desktop cursor ring. |
 | Charts | `js/explainer.js` | Ported from `risk-engine/site/main.js`. Same seeds and maths. |
-| Hero video | `assets/v3/hero-loop.webm`, `.mp4`, `hero-poster.webp` | 7 s seamless loop, 1920x1320, poster = frame 0. |
+| Hero video | `assets/v4/hero-loop.webm`, `.mp4`, `hero-poster.webp` | 6 s seamless loop, 1920x1320, poster = frame 0. |
 | Renders | `assets/v2/{rings,plates,bars}.webp`, `assets/v3/{dice,traffic,pillars,coin-dark}.webp` | Cycles, 2000-2400 px, denoised. |
 | Models | `assets/v2/*.glb` | Meshopt-compressed GLBs of the hero and the four props (for reuse; the page itself shows renders). |
 
@@ -58,23 +58,25 @@ npm run posters                                                                 
 & $bl -b --factory-startup blender\v2_models.blend --python blender\v3_props.py    # dice, traffic light, pillars -> blender\v3_props.blend
 $env:RE_MODE="final"; $env:RE_ONLY="dice,traffic,pillars,coindark"; & $bl -b --factory-startup blender\v3_props.blend --python blender\v2_render.py
 node scripts\posters.mjs blender\renders assets\v3 dice,traffic,pillars,coindark
-# v3 hero: whole ribbon tiled, travelling scatter wave
-& $bl -b --factory-startup --python blender\v3_hero.py                             # -> blender\v3_hero.blend
-$env:RE_MODE="loop"; & $bl -b --factory-startup blender\v3_hero.blend --python blender\v3_hero.py   # 168 frames -> C:\Jarvis\tmp\v3-loop
-npm run loop                                                                      # -> assets\v3\hero-loop.webm/.mp4 + poster (needs ffmpeg)
+# v4 hero (current): square-section bar, tiles on all four faces, travelling scatter wave
+& $bl -b --factory-startup --python blender\v4_hero.py                             # -> blender\v4_hero.blend
+$env:RE_MODE="loop"; & $bl -b --factory-startup blender\v4_hero.blend --python blender\v4_hero.py   # 144 frames -> C:\Jarvis\tmp\v4-loop
+node scripts\encode_loop.mjs C:/Jarvis/tmp/v4-loop assets/v4                      # -> hero-loop.webm/.mp4 + poster (needs ffmpeg)
+# (blender\v3_hero.py is the earlier flat-band version, kept for reference)
 npm run check:assets                                                              # fails if any image/video is used twice
 ```
 `npm install` brings the dev tools (`@gltf-transform/cli`, `sharp`). `npm run vendor` copies the font.
 
 ### What the models are
-- **Hero (v3)**: a figure-eight centre line swept with a thin rounded-edge cross-section and a half twist
-  (Möbius), 1,400 rings along the loop. About 11,100 bevelled tiles cover both faces of the whole ribbon, sitting
-  flush with the surface. For each frame a scatter wave (a smooth bump along the loop with a ragged, per-tile front)
-  chooses how far each tile extrudes (10 height steps), how much it tilts, and lets about 2.5% of them lift off.
-  The wave centre moves exactly once round the loop per cycle, so the last frame leads straight back into the
-  first. Material: pale blue-grey satin metal (metallic, roughness 0.23, light anisotropy). Lighting: a white-to-
-  blue-grey gradient sky plus soft emissive cards (top, sides, back, a cool blue bounce), transparent film, then
-  composited on pure white.
+- **Hero (v4)**: a figure-eight centre line swept with a rounded SQUARE cross-section (side 0.56, about a fifth of
+  the loop's height) and a half twist; a square maps onto itself after 180 degrees, so the loop closes seamlessly.
+  About 9,200 bevelled tiles (8 per face, 288 rows by arc length) cover all four faces flush with the surface, and
+  the bar carries a faint engraved seam grid at the same pitch, so it reads as tiled even where tiles are flush.
+  For each frame a scatter wave chooses how far each tile extrudes (10 height steps), how much it tilts, and lets
+  about 2.5% lift off; the wave moves exactly once round the loop per 6-second cycle. Materials: pale blue-grey satin
+  metal with a fine noise grain, light anisotropy and slightly rougher seams; tiles get a per-tile tint and roughness.
+  Lighting: white-to-blue-grey gradient sky plus soft emissive cards (a cool blue bounce gives the blue-grey
+  undersides), transparent film composited on pure white.
 - **Props**: (v2) machined rings (lathe profiles with chamfers and grooves, glowing green inlays, tick-marked
   base, green core and an orbiting sphere); stacked brushed-metal and engraved green-glass plates on posts
   with a glowing layer; a bar sculpture whose stacked blocks are sized by the real crisis losses (2022 in
