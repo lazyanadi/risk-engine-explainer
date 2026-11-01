@@ -74,3 +74,16 @@ The method cards still show 2.12/3.15, 1.81/2.08, 2.03/2.73 (VaR/ES %) and the s
   buttons is now a row of counters.
 - Number check repeated for v2: 13 readouts (6 confidence levels with sentence, 4 presets, 3 backtest tabs)
   identical to the original.
+
+## v3 changes (user feedback on v2)
+- Hero rebuilt to match how reference A's loop actually behaves (studied from two screenshots the user supplied):
+  the whole ribbon is tiled and a scatter wave travels continuously round it, smooth satin before and after the
+  wave; bright, airy blue-grey satin on white. Removed: the single dissolving patch, the dark core, green circuitry
+  and the glass cube cluster. Still modelled from scratch in `blender/v3_hero.py` (no assets copied).
+- Every picture is unique (7 slots, 7 different objects); `scripts/check-assets.mjs` enforces it.
+- Intro: coarser, calmer checker (7 -> 11 -> 17 cells high, slow flicker); the question sits on one clean solid
+  card; the corner cue reads "Scroll To Start", then "Keep scrolling", "Almost there", and is gone before the white.
+- Layout uses the width (frame up to 1760 px), larger body copy beside images, tighter gaps; the vertical section
+  label and the custom cursor ring were removed; the section-01 fan chart is scaled to fill its card.
+- Footer is a full-width dark band with the coin on dark, a solid wordmark (the outlined one showed stroke
+  artefacts where letter outlines overlap), brighter small text, and a generic `cd risk-engine` / `streamlit run app.py`.
