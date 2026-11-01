@@ -11,7 +11,8 @@
         "serve": "python -m http.server 8137 --bind 127.0.0.1",
         "optimize": "node scripts/optimize.mjs",
         "posters": "node scripts/posters.mjs",
-        "loop": "node scripts/encode_loop.mjs"
+        "loop": "node scripts/encode_loop.mjs",
+        "check:assets": "node scripts/check-assets.mjs"
     },
     "keywords": [],
     "author": "",

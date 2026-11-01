@@ -1,5 +1,5 @@
-/* Page detailing: hero pin choreography (copy out, chapter captions in), number counters,
-   section indicator, desktop cursor ring. Everything degrades to static content with reduced motion. */
+/* Page detailing: hero pin choreography (copy out, chapter captions in), number counters.
+   Everything degrades to static content with reduced motion. */
 (function () {
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -39,42 +39,4 @@ if (vis && !reduce) {
   new IntersectionObserver(es => { es[0].isIntersecting ? v.play().catch(() => {}) : v.pause(); }).observe(vis);
 }
 
-/* ---------- section indicator (replaces the intro's "Scroll To Start" once on the main page) ---------- */
-const ind = $("#secInd"), indNum = $("#secIndNum"), indLab = $("#secIndLab");
-const secs = $$("main .sec");
-let curSec = null;
-function indicator() {
-  if (!ind) return;
-  const page = $(".page").getBoundingClientRect();
-  let cur = null;
-  for (const s of secs) if (s.getBoundingClientRect().top < innerHeight * 0.5) cur = s;
-  // only once a numbered section is on screen (not over the hero), and not over the footer
-  const show = !!cur && page.top < 0 && $("#launch").getBoundingClientRect().top > innerHeight * 0.6;
-  ind.classList.toggle("on", show);
-  if (cur !== curSec) {
-    curSec = cur;
-    const n = cur ? $(".num", cur).textContent : "00";
-    const l = cur ? $(".label", cur).textContent : "Overview";
-    indNum.textContent = n; indLab.textContent = l;
-    ind.classList.remove("flip"); void ind.offsetWidth; ind.classList.add("flip");
-  }
-}
-
-let ticking = false;
-function onScroll() { if (ticking) return; ticking = true; requestAnimationFrame(() => { ticking = false; indicator(); }); }
-addEventListener("scroll", onScroll, { passive: true });
-addEventListener("resize", onScroll);
-onScroll();
-
-/* ---------- desktop cursor ring (the native cursor stays; the ring only follows it) ---------- */
-if (!reduce && matchMedia("(hover: hover) and (pointer: fine)").matches) {
-  const ring = document.createElement("div");
-  ring.id = "cursor"; ring.setAttribute("aria-hidden", "true");
-  document.body.appendChild(ring);
-  let x = -100, y = -100, tx = -100, ty = -100, big = false;
-  addEventListener("pointermove", e => { tx = e.clientX; ty = e.clientY; const h = e.target.closest("a,button,input,label"); if (!!h !== big) { big = !!h; ring.classList.toggle("big", big); } }, { passive: true });
-  document.addEventListener("pointerleave", () => { tx = ty = -100; });
-  const loop = () => { x += (tx - x) * 0.2; y += (ty - y) * 0.2; ring.style.transform = `translate(${x}px,${y}px)`; requestAnimationFrame(loop); };
-  loop();
-}
 })();

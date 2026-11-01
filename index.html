@@ -58,8 +58,8 @@
             <a class="pill" href="#play">Break the portfolio</a>
           </div>
         </div>
-        <div class="hero-visual" id="heroVisual" data-webm="assets/v2/hero-loop.webm" data-mp4="assets/v2/hero-loop.mp4">
-          <img class="poster" src="assets/v2/hero-poster.webp" width="1600" height="1100" alt="A thick polished-silver Möbius loop shaped like an infinity sign. On one side its surface breaks into a grid of small metal tiles that float away, revealing glowing green circuit lines underneath; a cube of green glass cubes floats inside the other loop.">
+        <div class="hero-visual" id="heroVisual" data-webm="assets/v3/hero-loop.webm" data-mp4="assets/v3/hero-loop.mp4">
+          <img class="poster" src="assets/v3/hero-poster.webp" width="1920" height="1320" alt="A wide satin-silver Möbius ribbon shaped like an infinity sign. Its surface is made of fine square tiles; a wave travels round the loop, pushing tiles out to different depths before they settle back into a smooth surface.">
         </div>
         <dl class="hero-stats">
           <div><dt>Trading days</dt><dd><span data-num="4987" data-sep>4,987</span></dd></div>
@@ -137,7 +137,7 @@
             <span class="acc-nums"><span><span data-count="2.12" data-dec="2">0</span>%<small>VaR</small></span><span class="es"><span data-count="3.15" data-dec="2">0</span>%<small>ES</small></span></span>
             <span class="circ" aria-hidden="true"></span></button></h3>
           <div class="acc-panel" id="acc-p1" role="region" aria-labelledby="acc-b1"><div class="acc-inner">
-            <img src="assets/v2/plates.webp" width="2400" height="1800" alt="A stack of brushed-metal and green glass plates on polished posts, like pages of past days." loading="lazy">
+            <div class="prop3d"><img src="assets/v2/plates.webp" width="2400" height="1800" alt="A stack of brushed-metal and green glass plates on polished posts, like pages of past days." loading="lazy"></div>
             <p>Take every real day since 2007, sort them worst to best, and read off the line. No assumptions, but it only knows what already happened.</p>
           </div></div>
         </article>
@@ -157,7 +157,7 @@
             <span class="acc-nums"><span><span data-count="2.03" data-dec="2">0</span>%<small>VaR</small></span><span class="es"><span data-count="2.73" data-dec="2">0</span>%<small>ES</small></span></span>
             <span class="circ" aria-hidden="true"></span></button></h3>
           <div class="acc-panel" id="acc-p3" role="region" aria-labelledby="acc-b3"><div class="acc-inner">
-            <img src="assets/v2/coin.webp" width="2400" height="1800" alt="A silver coin engraved with a fat-tailed histogram whose worst bars are orange, with white dice and one orange die: chance, with rare shocks." loading="lazy">
+            <div class="prop3d"><img src="assets/v3/dice.webp" width="2400" height="1800" alt="A cloud of white dice tumbling onto a brushed plate; a few that landed far out are orange: rare shocks in thousands of simulated rolls." loading="lazy"></div>
             <p>Roll the dice thousands of times using a curve that allows rare shocks (Student-t), keeping the same correlations between assets.</p>
           </div></div>
         </article>
@@ -170,7 +170,7 @@
       <div class="sec-head"><span class="num">04</span><span class="label">Can you trust it?</span></div>
       <div class="split rev">
         <figure class="card viz">
-          <div class="prop3d plates3d"><img src="assets/v2/plates.webp" width="2400" height="1800" alt="Stacked glass and metal plates: each plate a year of the report card." loading="lazy"></div>
+          <div class="prop3d plates3d"><img src="assets/v3/traffic.webp" width="2400" height="1800" alt="A brushed-metal traffic light with a ruler of 250 days down its side; only the green lens is lit: today's Basel zone." loading="lazy"></div>
           <canvas id="btCanvas" role="img" aria-label="Timeline from 2008 to 2025 with a tick for each day the loss broke the forecast."></canvas>
           <figcaption class="cap">Each tick is a trading day on which the loss was <i>worse</i> than the forecast. Placement is illustrative; the counts are the real results.</figcaption>
         </figure>
@@ -223,6 +223,7 @@
         <div class="copy">
           <h2 class="reveal">Break the portfolio yourself.</h2>
           <p class="reveal">Set a shock for each holding and see the hit to a $1,000,000 portfolio split equally four ways. This is the engine's <b>custom shock</b> feature.</p>
+          <div class="prop3d play-img"><img src="assets/v3/pillars.webp" width="2400" height="1800" alt="Four pillars for SPY, TLT, GLD and EEM after the 2008-style shock: shares and emerging markets cut down in orange, bonds and gold a little taller in green, each with a glass ring at its starting height." loading="lazy"></div>
           <div class="presets" role="group" aria-label="Preset scenarios">
             <button class="pill" data-p="0,0,0,0">Calm</button><button class="pill" data-p="-35,10,5,-40">2008-style</button>
             <button class="pill" data-p="-20,-20,-5,-25">Stocks + bonds fall</button><button class="pill" data-p="-10,15,12,-15">Flight to safety</button>
@@ -266,6 +267,8 @@
     </section>
   </main>
 
+</div>
+
   <footer id="launch" class="foot">
     <canvas id="footWave" aria-hidden="true"></canvas>
     <div class="foot-inner">
@@ -274,10 +277,10 @@
           <p class="eyebrow light">The end of the guide · the start of the engine</p>
           <h2>Try the real engine.</h2>
           <p class="foot-lead">Live Yahoo Finance data, your own tickers and weights, the full backtest.</p>
-          <pre><code>cd C:\Jarvis\projects\risk-engine
-.\.venv\Scripts\streamlit run app.py</code></pre>
+          <pre><code>cd risk-engine
+streamlit run app.py</code></pre>
         </div>
-        <div class="prop3d foot-3d"><img src="assets/v2/coin.webp" width="2400" height="1800" alt="A silver coin engraved with a fat-tailed histogram, next to dice; one die is orange." loading="lazy"></div>
+        <div class="foot-3d"><img src="assets/v3/coin-dark.webp" width="2000" height="2000" alt="A reeded silver coin engraved with a fat-tailed histogram whose worst bars are orange, beside two white dice and one orange die." loading="lazy"></div>
       </div>
       <nav class="foot-index" aria-label="Sections, again">
         <a href="#intro-idea"><span>01</span>The idea</a><a href="#var"><span>02</span>Two numbers</a><a href="#methods"><span>03</span>Three ways</a><a href="#backtest"><span>04</span>Report card</a>
@@ -291,8 +294,6 @@
       <p class="fine">RISK/ENGINE · 3D models made in Blender, procedurally · <a href="#top">Back to top</a></p>
     </div>
   </footer>
-  <div class="sec-ind" id="secInd" aria-hidden="true"><span id="secIndNum">00</span><i></i><span id="secIndLab">Overview</span></div>
-</div>
 
 <div class="grain" aria-hidden="true"></div>
 <script src="js/explainer.js" defer></script>

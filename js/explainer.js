@@ -80,7 +80,8 @@ function setup(cv) {
   function frame(now) {
     const prog = reduce ? 1 : Math.min(1, (now - t0) / 4200), upto = Math.floor(prog * (STEPS - 1)) + 1;
     c.clearRect(0, 0, w, h);
-    const sx = w * .98 / STEPS, mid = h * .5, sy = h * .016;
+    let lo = 0, hi = 0; paths.forEach(p => p.forEach(v => { if (v < lo) lo = v; if (v > hi) hi = v; }));
+    const sx = w * .98 / STEPS, sy = h * .92 / (hi - lo), mid = h * .04 + hi * sy; // fit the fan to the card
     const finals = paths.map(p => p[STEPS - 1]).sort((a, b) => a - b), cut = finals[Math.floor(N * .05)];
     c.strokeStyle = C.line; c.lineWidth = 1; c.beginPath(); c.moveTo(0, mid); c.lineTo(w, mid); c.stroke();
     paths.forEach(p => {

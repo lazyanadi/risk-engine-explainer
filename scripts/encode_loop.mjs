@@ -4,19 +4,19 @@ import { execFileSync } from "node:child_process";
 import { statSync, mkdirSync } from "node:fs";
 import sharp from "sharp";
 
-const dir = process.argv[2] || "C:/Jarvis/tmp/v2-loop";
-const out = "assets/v2";
+const dir = process.argv[2] || "C:/Jarvis/tmp/v3-loop";
+const out = process.argv[3] || "assets/v3";
 mkdirSync(out, { recursive: true });
-const fps = 24, W = 1600, H = 1100;
+const fps = 24, W = +(process.env.LOOP_W || 1920), H = +(process.env.LOOP_H || 1320);
 const input = ["-y", "-framerate", String(fps), "-i", `${dir}/f%04d.png`];
 // flatten the alpha onto the page white (#ffffff)
 const run = args => execFileSync("ffmpeg", args, { stdio: "inherit" });
 run([...input.slice(0, 1), "-f", "lavfi", "-i", `color=white:s=${W}x${H}:r=${fps}`, ...input.slice(1),
   "-filter_complex", `[1:v]format=rgba[fg];[0:v][fg]overlay=shortest=1,format=yuv420p`,
-  "-c:v", "libvpx-vp9", "-b:v", "0", "-crf", "34", "-row-mt", "1", "-deadline", "good", "-cpu-used", "2", "-an", `${out}/hero-loop.webm`]);
+  "-c:v", "libvpx-vp9", "-b:v", "0", "-crf", "36", "-row-mt", "1", "-deadline", "good", "-cpu-used", "2", "-an", `${out}/hero-loop.webm`]);
 run([...input.slice(0, 1), "-f", "lavfi", "-i", `color=white:s=${W}x${H}:r=${fps}`, ...input.slice(1),
   "-filter_complex", `[1:v]format=rgba[fg];[0:v][fg]overlay=shortest=1,format=yuv420p`,
-  "-c:v", "libx264", "-preset", "slow", "-crf", "23", "-profile:v", "high", "-movflags", "+faststart", "-an", `${out}/hero-loop.mp4`]);
+  "-c:v", "libx264", "-preset", "slow", "-crf", "24", "-profile:v", "high", "-movflags", "+faststart", "-an", `${out}/hero-loop.mp4`]);
 // poster = frame 0 (so first paint and the first video frame are identical)
 await sharp(`${dir}/f0000.png`).flatten({ background: "#ffffff" }).webp({ quality: 86, effort: 6 }).toFile(`${out}/hero-poster.webp`);
 for (const f of ["hero-loop.webm", "hero-loop.mp4", "hero-poster.webp"])

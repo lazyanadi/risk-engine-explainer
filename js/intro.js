@@ -117,18 +117,18 @@ void main(){
   float chk = smoothstep(0.44, 0.72, uP);
   float wipe = smoothstep(0.68, 0.93, uP);
   // two grid levels; each coarse cell splits into the finer grid at its own random moment
-  float lv = chk * 4.0, l0 = floor(lv), lf = fract(lv);
-  float n0 = floor(9.0 * pow(1.65, l0)), n1 = floor(9.0 * pow(1.65, l0 + 1.0));
+  float lv = chk * 2.0, l0 = floor(lv), lf = fract(lv);
+  float n0 = floor(7.0 * pow(1.6, l0)), n1 = floor(7.0 * pow(1.6, l0 + 1.0));   // 7 -> 11 -> 17 cells high: calm, not static
   float cs0 = uRes.y / n0, cs1 = uRes.y / n1;
   vec2 c0 = floor(frag / cs0), c1 = floor(frag / cs1);
   bool fine = cellRand(c0 + l0 * 13.0) < lf;
   vec2 cell = fine ? c1 : c0; float cs = fine ? cs1 : cs0;
   vec2 cc = (cell + 0.5) * cs;
   float r = cellRand(cell + (fine ? l0 + 1.0 : l0) * 13.0);
-  float flick = hash(cell + floor(uTime * 9.0));
+  float flick = hash(cell + floor(uTime * 2.0));
   vec3 src = scene(cc);
   float lum = dot(src, vec3(0.3, 0.5, 0.2));
-  vec3 bw = lum > 0.42 + 0.25 * (flick - 0.5) * (1.0 - chk) ? vec3(1.0) : CHAR;
+  vec3 bw = lum > 0.42 + 0.08 * (flick - 0.5) * (1.0 - chk) ? vec3(1.0) : CHAR;
   vec3 checker = mod(cell.x + cell.y, 2.0) < 1.0 ? vec3(1.0) : CHAR;
   float toChecker = smoothstep(r - 0.015, r + 0.015, chk * 1.25);   // each cell flips crisply at its own moment
   vec3 col = mix(bw, checker, toChecker);
@@ -197,6 +197,8 @@ if (intro && !reduce) {
   const target = scrEl.textContent;
   const pct = document.getElementById("introPct");
   const cue = intro.querySelector(".corner.tr");
+  const cueText = cue.querySelector(".scroll-cue");
+  let cueLabel = "";
 
   let visible = true, lastScr = "", frames = 0, acc = 0;
   const progress = () => { const r = intro.getBoundingClientRect(); return clamp(-r.top / (r.height - innerHeight)); };
@@ -243,8 +245,11 @@ if (intro && !reduce) {
     // labels: plain on dark, dark chips over the blocks, white chips once the page turns white;
     // the "Scroll To Start" cue retires as the page turns white (a section indicator takes over)
     intro.dataset.phase = p < 0.34 ? "dark" : p < 0.68 ? "blocks" : "light";
-    cue.style.opacity = String(1 - smooth(0.66, 0.74, p));
-    cue.style.visibility = p > 0.74 ? "hidden" : "";
+    // the cue only says "Scroll To Start" at the start; mid-transition it changes, then retires
+    const lab = p < 0.08 ? "Scroll To Start" : p < 0.34 ? "Keep scrolling" : "Almost there";
+    if (lab !== cueLabel) { cueText.textContent = lab; cueLabel = lab; }
+    cue.style.opacity = String(1 - smooth(0.6, 0.68, p));
+    cue.style.visibility = p > 0.68 ? "hidden" : "";
     intro.style.setProperty("--corner-fade", String(1 - smooth(0.88, 0.97, p)));
   }
   new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { threshold: 0 }).observe(intro);
