@@ -33,6 +33,19 @@ Section props stay live but only with a very gentle idle sway (no tilt, no paral
 - [x] verify (1440x900 + 390x844), 5 review rounds, `docs/shots/v2-*`, console clean, 13/13 numbers identical, frame time ok, reduced motion = poster
 - [x] README, NOTES, log
 
+## v3: user feedback on v2 (2026-11-01)
+- [ ] Hero loop rebuilt (`blender/v3_hero.py`): whole wide, thin Möbius ribbon covered by a fine tile grid; a scatter
+      wave travels once round the loop per cycle (tiles extrude to random heights, small rotations, a few lift off),
+      smooth satin before and after it; pale blue-grey satin on pure white, soft studio light; no dark core, no green
+      circuitry, no glass cube. Camera and loop fixed. Higher resolution (2000 px), poster + WebM + MP4, seamless.
+- [ ] Every image used once: 7 slots (3 method cards, report card, crises, your turn, footer) -> 7 distinct renders
+      (plates, rings, dice cloud, traffic light, crisis bars, four pillars, coin on dark). `npm run check:assets` fails on repeats.
+- [ ] Intro: coarser, calmer checker; clean solid headline chip, no ghosting; corner label changes text mid-transition
+- [ ] Hero spacing (gap headline/loop, less empty space), marquee edge fade, section-01 chart fills its card, no cursor ring
+- [ ] Wide layout (frame up to 1760 px), larger body type beside images, tighter gaps; vertical section label removed
+- [ ] Footer: full-width dark band, dark coin render, solid wordmark (no stroke artefacts), higher contrast, generic run command
+- [ ] Verify 1440x900, 1920x1080, 390x844 -> `docs/shots/v3-*`; console, numbers, reduced motion; docs + log
+
 ---
 
 ## v1 history
