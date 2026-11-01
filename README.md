@@ -1,7 +1,35 @@
-# RISK/ENGINE, remade (v3)
+# RISK/ENGINE: How Bad Could a Bad Day Get?
 
-The plain-language Value at Risk explainer from `../risk-engine/site/`, rebuilt as one page that
-opens in the dark and ends in the light:
+**A cinematic, interactive guide to market risk, built as a scroll-driven website with a Blender-made 3D hero.**
+
+Live site: https://lazyanadi.github.io/risk-engine-explainer/
+
+RISK/ENGINE explains Value at Risk (VaR), Expected Shortfall, backtesting and stress tests to people with no
+finance background. It answers one question, "how bad could a bad day get?", with a number, and then checks
+whether that number can be trusted. Every idea has a slider, chart or button you can play with.
+
+The page is designed as one continuous story that **opens in the dark and ends in the light**:
+
+- It starts on a charcoal screen with a live WebGL "market wave", glowing orange, with drifting sparks,
+  soft bokeh and light streaks.
+- Scrolling melts the wave into a blurred field, then black-and-white blocks, then a checkerboard that
+  refines and wipes away to a bright white page.
+- On the white page, a thick square-section bar twisting into an infinity shape, modelled and rendered in
+  Blender, is covered in a fine tile grid. A scatter wave travels once around the whole loop, lifting tiles
+  off and letting them settle flush again, in a seamless 6-second video.
+- Underneath sits the full explainer, in a clean editorial style of hairline rows, pill buttons and grey cards.
+
+Colour carries meaning throughout: **green is a normal day, inside the line; orange is the tail, the worst days.**
+
+Built with plain HTML, CSS and JavaScript (no framework), one GLSL fragment shader for the intro, and Blender
+(Python) for every 3D picture and the hero video. The explainer's maths is a faithful port of a tested
+Python market-risk engine, and its numbers were checked against the original site (all 13 readouts identical).
+
+> Design note: the layout and the opening sequence were inspired by ideas seen on two public websites
+> (a bright corporate finance home page and a dark trading-firm intro). Only ideas were taken. No code, text,
+> images, logos or names were copied; all code and 3D assets here are original. See `docs/NOTES.md`.
+
+## What is on the page
 
 1. **Intro**: a glowing orange "market wave" on charcoal (a live WebGL shader) with drifting sparks and
    soft bokeh, light streaks running along the wave, strands at different depths (depth-of-field blur)
@@ -14,7 +42,7 @@ opens in the dark and ends in the light:
    Blender, with every face covered by a fine tile grid**. It stays fixed in place; a calm, seamless 6-second video
    plays on it: a scatter wave travels once round the loop, pushing tiles on all four faces out to different depths
    (a few lift off) and letting them settle back flush. Under the buttons: a row of counters, then a marquee strip.
-3. **All eight original sections** with their text and interactive charts (numbers identical to the original).
+3. **All seven sections** with their text and interactive charts (numbers identical to the original).
    Every picture is a different Blender object, used once: stacked plates (Historical), machined rings
    (Parametric), dice cloud (Monte Carlo), traffic light (Report card), crisis bars (Crises), four asset pillars
    (Your turn), coin with dice on dark (footer). `npm run check:assets` fails if any image or video is used twice.
@@ -24,10 +52,11 @@ opens in the dark and ends in the light:
 Colour has a meaning: **green = safe days / inside the line**, **orange (the intro's wave) = the tail,
 the worst days**.
 
-## Run it
+## Run it locally
 
 ```powershell
-cd C:\Jarvis\projects\kaib-style-site
+git clone https://github.com/lazyanadi/risk-engine-explainer.git
+cd risk-engine-explainer
 python -m http.server 8137 --bind 127.0.0.1    # or: npm run serve
 ```
 Open http://127.0.0.1:8137/ . Everything is local; there are no CDN requests.
@@ -39,7 +68,7 @@ Open http://127.0.0.1:8137/ . Everything is local; there are no CDN requests.
 | Page | `index.html`, `css/style.css` | Plain HTML/CSS, no framework. Inter variable font (vendored). |
 | Intro shader | `js/intro.js` | One fragment shader driven by scroll progress; also draws the calm wave in the footer. |
 | Page details | `js/ui.js` | Hero loop video (with poster fallback), counters, section indicator, desktop cursor ring. |
-| Charts | `js/explainer.js` | Ported from `risk-engine/site/main.js`. Same seeds and maths. |
+| Charts | `js/explainer.js` | Ported from the original risk-engine explainer. Same seeds and maths. |
 | Hero video | `assets/v4/hero-loop.webm`, `.mp4`, `hero-poster.webp` | 6 s seamless loop, 1920x1320, poster = frame 0. |
 | Renders | `assets/v2/{rings,plates,bars}.webp`, `assets/v3/{dice,traffic,pillars,coin-dark}.webp` | Cycles, 2000-2400 px, denoised. |
 | Models | `assets/v2/*.glb` | Meshopt-compressed GLBs of the hero and the four props (for reuse; the page itself shows renders). |
@@ -61,7 +90,7 @@ node scripts\posters.mjs blender\renders assets\v3 dice,traffic,pillars,coindark
 # v4 hero (current): square-section bar, tiles on all four faces, travelling scatter wave
 & $bl -b --factory-startup --python blender\v4_hero.py                             # -> blender\v4_hero.blend
 $env:RE_MODE="loop"; & $bl -b --factory-startup blender\v4_hero.blend --python blender\v4_hero.py   # 144 frames -> C:\Jarvis\tmp\v4-loop
-node scripts\encode_loop.mjs C:/Jarvis/tmp/v4-loop assets/v4                      # -> hero-loop.webm/.mp4 + poster (needs ffmpeg)
+node scripts\encode_loop.mjs <frames-folder> assets/v4                      # -> hero-loop.webm/.mp4 + poster (needs ffmpeg)
 # (blender\v3_hero.py is the earlier flat-band version, kept for reference)
 npm run check:assets                                                              # fails if any image/video is used twice
 ```
