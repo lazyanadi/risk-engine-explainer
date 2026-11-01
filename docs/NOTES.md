@@ -42,8 +42,8 @@ investment-bank home page ("reference A", kaib-invest.com) and a dark trading-fi
 - **Text**: all copy comes from `risk-engine/site/index.html`, plus a few new connective lines
   (eyebrow captions, risk warning wording, image alt text). None of the references' text is used.
 - **Brand**: reference A's name and logo do not appear anywhere on the site (checked with a search of
-  `index.html`, `css/`, `js/`, `assets/`). Reference B is named only where the original explainer
-  already listed it as an Awwwards inspiration (section 08), linking to its Awwwards page.
+  `index.html`, `css/`, `js/`, `assets/`). Reference B is not named either: the
+  "Design inspiration" section (08) listing Awwwards sites was removed at the user's request (2026-11-01).
 - **Assets**: no images, video, fonts or icons were downloaded from either reference.
 
 ## Number check (ported charts vs original)

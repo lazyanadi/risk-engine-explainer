@@ -239,16 +239,6 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px var(-
 .impact strong{display:block;font-size:clamp(44px,5vw,64px);line-height:1.1;font-weight:700;letter-spacing:-.04em;font-variant-numeric:tabular-nums;transition:color .3s}
 .impact span{color:var(--grey);font-size:18px;font-variant-numeric:tabular-nums}
 
-/* inspiration */
-.sites{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.site{position:relative;display:flex;flex-direction:column;min-height:300px;transition:background .3s}
-.site-k{font-size:12px;color:var(--grey);letter-spacing:.08em;text-transform:uppercase;margin-bottom:auto}
-.site b{font-size:24px;font-weight:600;letter-spacing:-.02em;margin:40px 0 8px}
-.site p{color:var(--grey);font-size:15px;margin-right:64px}
-.site .circ{position:absolute;right:20px;bottom:20px}
-.site:hover{background:var(--card2)}.site:hover .circ{background:var(--ink);border-color:var(--ink);transform:rotate(-45deg)}
-.site:hover .circ:before{border-color:#fff}
-
 /* footer: the wave returns, dark, as the closing frame */
 .foot{position:relative;margin-top:clamp(90px,12vw,160px);background:#1b1d20;color:#fff;overflow:hidden;width:100%}
 .foot-inner{max-width:1760px;margin:0 auto}
@@ -278,7 +268,6 @@ html.js .reveal.in{opacity:1;transform:none}
 @media(max-width:960px){
   .split,.split.rev,.cols{grid-template-columns:1fr}
   .split.rev .viz{order:2}
-  .sites{grid-template-columns:repeat(2,minmax(0,1fr))}
   .hero-in{grid-template-columns:1fr;grid-template-rows:auto auto auto;align-items:start;padding-top:28px;min-height:0}
   .hero-visual{width:120%;margin:8px -10% 0;align-self:center}
   .hero-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -306,7 +295,6 @@ html.js .reveal.in{opacity:1;transform:none}
   .acc-inner p{font-size:17px}
   .bar{grid-template-columns:minmax(0,1fr) 80px;gap:10px 16px}
   .bar .track{grid-column:1/-1;order:3}
-  .sites{grid-template-columns:1fr}
   .site{min-height:220px}
   .readouts small{font-size:10.5px}
   #histCanvas{height:260px}#pathsCanvas{height:230px}
