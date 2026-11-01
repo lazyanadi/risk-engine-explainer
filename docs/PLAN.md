@@ -50,7 +50,7 @@ Section props stay live but only with a very gentle idle sway (no tilt, no paral
 - [x] Square cross-section bar (`blender/v4_hero.py`), half twist, tiles on all four faces, wave scatters every face
 - [x] Richer surface: seam grid, satin grain, anisotropy, per-tile tint/roughness, deeper blue-grey undersides
 - [x] Fix: hero video looked dark (poster + video multiplied twice)
-- [ ] 144-frame loop (6 s) -> assets/v4 (poster, WebM, MP4); page points to v4; asset check; re-verify 3 sizes; log
+- [x] 144-frame loop (6 s, seamless) -> assets/v4 (WebM 1.9 MB, MP4 2.2 MB, poster 80 KB); page points to v4; asset check passes; re-verified at 1440/1920/390; numbers 13/13; reduced motion; log
 
 ---
 
