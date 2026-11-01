@@ -89,7 +89,7 @@ $env:RE_MODE="final"; $env:RE_ONLY="dice,traffic,pillars,coindark"; & $bl -b --f
 node scripts\posters.mjs blender\renders assets\v3 dice,traffic,pillars,coindark
 # v4 hero (current): square-section bar, tiles on all four faces, travelling scatter wave
 & $bl -b --factory-startup --python blender\v4_hero.py                             # -> blender\v4_hero.blend
-$env:RE_MODE="loop"; & $bl -b --factory-startup blender\v4_hero.blend --python blender\v4_hero.py   # 144 frames -> C:\Jarvis\tmp\v4-loop
+$env:RE_MODE="loop"; & $bl -b --factory-startup blender\v4_hero.blend --python blender\v4_hero.py   # 144 frames -> <frames-folder>
 node scripts\encode_loop.mjs <frames-folder> assets/v4                      # -> hero-loop.webm/.mp4 + poster (needs ffmpeg)
 # (blender\v3_hero.py is the earlier flat-band version, kept for reference)
 npm run check:assets                                                              # fails if any image/video is used twice
