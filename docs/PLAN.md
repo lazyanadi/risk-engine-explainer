@@ -67,3 +67,9 @@ Section props stay live but only with a very gentle idle sway (no tilt, no paral
 - The GUI session crashed during glTF export: Blender 5.2 depsgraph EXCEPTION_ACCESS_VIOLATION (BKE_base_eval_flags)
   when the exporter ran with a context override to a non-active scene. Background mode is the stable path:
   `blender -b --factory-startup --python blender/build_hero.py`, then `RE_MODE=export blender -b blender/hero.blend --python blender/render.py`.
+
+## v5/v6 hero (user request, 2026-11-02)
+- [x] v5: solid tapered silver ribbon, mirror outside, real coffered grid inside, hard shadow, thin grey frame behind (`blender/v5_hero.py`)
+- [x] Thicker belt, square section like the v4 bar; deeper grid; frame and shadow fixed (two render passes layered)
+- [x] v6: panels on all four faces, two wave fronts, champagne-gold tint on raised panels (`blender/v6_hero.py`, `blender/v6_loop.cmd`)
+- [x] 144-frame loop -> `scripts/encode_loop_v5.mjs` -> assets/v6 (WebM 3.4 MB, MP4 2.7 MB, poster); page points to v6; asset check passes; verified at 1440 (video playing, console clean)

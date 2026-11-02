@@ -14,10 +14,9 @@ The page is designed as one continuous story that **opens in the dark and ends i
   soft bokeh and light streaks.
 - Scrolling melts the wave into a blurred field, then black-and-white blocks, then a checkerboard that
   refines and wipes away to a bright white page.
-- On the white page, a polished silver ribbon looping into an infinity shape, modelled and rendered in Blender:
-  a mirror outside, a deep coffered grid cut into the inside, thick in the foreground and tapering away, with a
-  hard shadow and a thin grey frame behind it. It is a still image (`blender/v5_hero.py`, two passes: `v5_final.cmd`
-  and `v5_shadow.cmd`, layered).
+- On the white page, a polished silver square-section bar looping into an infinity shape, modelled and rendered
+  in Blender. All four faces are paneled in a fine grid, and a champagne-gold wave of panels pops out and settles
+  back as it travels round the loop, in a seamless 6-second video, with a hard shadow and a thin grey frame behind.
 - Underneath sits the full explainer, in a clean editorial style of hairline rows, pill buttons and grey cards.
 
 Colour carries meaning throughout: **green is a normal day, inside the line; orange is the tail, the worst days.**
@@ -39,10 +38,11 @@ Python market-risk engine, and its numbers were checked against the original sit
    in cell by cell, a checkerboard that refines smoothly, and a diagonal wipe in which every dark square
    shrinks away to the white main page.
 2. **Main page**: white, wide (frame up to 1760 px), hairline rows with corner ticks, pill buttons, round arrow
-   buttons, grey rounded cards. The hero is a **thick square-section bar twisting through an infinity shape, made in
-   Blender, with every face covered by a fine tile grid**. It stays fixed in place; a calm, seamless 6-second video
-   plays on it: a scatter wave travels once round the loop, pushing tiles on all four faces out to different depths
-   (a few lift off) and letting them settle back flush. Under the buttons: a row of counters, then a marquee strip.
+   buttons, grey rounded cards. The hero is a **polished silver square-section bar twisting through an infinity
+   shape, made in Blender, paneled on all four faces**. It stays fixed in place; a calm, seamless 6-second video
+   plays on it: two wave fronts, half a loop apart, run round the loop, lifting panels out to different heights
+   (a few sink in) and warming them to champagne gold before they settle back to silver. Under the buttons: a row
+   of counters, then a marquee strip.
 3. **All seven sections** with their text and interactive charts (numbers identical to the original).
    Every picture is a different Blender object, used once: stacked plates (Historical), machined rings
    (Parametric), dice cloud (Monte Carlo), traffic light (Report card), crisis bars (Crises), four asset pillars
@@ -70,7 +70,7 @@ Open http://127.0.0.1:8137/ . Everything is local; there are no CDN requests.
 | Intro shader | `js/intro.js` | One fragment shader driven by scroll progress; also draws the calm wave in the footer. |
 | Page details | `js/ui.js` | Hero loop video (with poster fallback), counters, section indicator, desktop cursor ring. |
 | Charts | `js/explainer.js` | Ported from the original risk-engine explainer. Same seeds and maths. |
-| Hero video | `assets/v4/hero-loop.webm`, `.mp4`, `hero-poster.webp` | 6 s seamless loop, 1920x1320, poster = frame 0. |
+| Hero video | `assets/v6/hero-loop.webm`, `.mp4`, `hero-poster.webp` | 6 s seamless loop, 1344x924, poster = frame 0, grey frame drawn under it by the encoder. |
 | Renders | `assets/v2/{rings,plates,bars}.webp`, `assets/v3/{dice,traffic,pillars,coin-dark}.webp` | Cycles, 2000-2400 px, denoised. |
 | Models | `assets/v2/*.glb` | Meshopt-compressed GLBs of the hero and the four props (for reuse; the page itself shows renders). |
 
@@ -88,25 +88,25 @@ npm run posters                                                                 
 & $bl -b --factory-startup blender\v2_models.blend --python blender\v3_props.py    # dice, traffic light, pillars -> blender\v3_props.blend
 $env:RE_MODE="final"; $env:RE_ONLY="dice,traffic,pillars,coindark"; & $bl -b --factory-startup blender\v3_props.blend --python blender\v2_render.py
 node scripts\posters.mjs blender\renders assets\v3 dice,traffic,pillars,coindark
-# v4 hero (current): square-section bar, tiles on all four faces, travelling scatter wave
-& $bl -b --factory-startup --python blender\v4_hero.py                             # -> blender\v4_hero.blend
-$env:RE_MODE="loop"; & $bl -b --factory-startup blender\v4_hero.blend --python blender\v4_hero.py   # 144 frames -> <frames-folder>
-node scripts\encode_loop.mjs <frames-folder> assets/v4                      # -> hero-loop.webm/.mp4 + poster (needs ffmpeg)
-# (blender\v3_hero.py is the earlier flat-band version, kept for reference)
+# v6 hero (current): square bar, panels on all four faces, two travelling champagne wave fronts
+& blender\v6_loop.cmd                                                              # 144 frames -> C:\Jarvis\tmp\v6-loop (resumable)
+node scripts\encode_loop_v5.mjs <frames-folder> assets/v6                          # -> hero-loop.webm/.mp4 + poster (needs ffmpeg)
+# (blender\v4_hero.py = earlier tiled bar, blender\v5_hero.py = single-wave ribbon; both kept for reference)
 npm run check:assets                                                              # fails if any image/video is used twice
 ```
 `npm install` brings the dev tools (`@gltf-transform/cli`, `sharp`). `npm run vendor` copies the font.
 
 ### What the models are
-- **Hero (v4)**: a figure-eight centre line swept with a rounded SQUARE cross-section (side 0.56, about a fifth of
-  the loop's height) and a half twist; a square maps onto itself after 180 degrees, so the loop closes seamlessly.
-  About 9,200 bevelled tiles (8 per face, 288 rows by arc length) cover all four faces flush with the surface, and
-  the bar carries a faint engraved seam grid at the same pitch, so it reads as tiled even where tiles are flush.
-  For each frame a scatter wave chooses how far each tile extrudes (10 height steps), how much it tilts, and lets
-  about 2.5% lift off; the wave moves exactly once round the loop per 6-second cycle. Materials: pale blue-grey satin
-  metal with a fine noise grain, light anisotropy and slightly rougher seams; tiles get a per-tile tint and roughness.
-  Lighting: white-to-blue-grey gradient sky plus soft emissive cards (a cool blue bounce gives the blue-grey
-  undersides), transparent film composited on pure white.
+- **Hero (v6)**: a figure-eight centre line swept with a rounded SQUARE cross-section (0.56 x 0.56 at the nearest
+  lobe, tapering to 70% on the far lobe). The sweep is one continuous, solid mesh (about 184,000 vertices), with no
+  twist and a clear gap at the crossing so one band passes cleanly over the other. All four faces are paneled:
+  hairline grooves on the three mirror faces, deep slots on the inside face. For each frame a wave function lifts
+  every panel along its face normal (a few sink in) and writes a per-vertex "Pop" colour attribute, which the shader
+  uses to warm raised panels toward champagne gold; two wave fronts run round the loop once per 6-second cycle.
+  Materials: polished metal (roughness 0.03) with a warm silver base; the inside face is satin with ambient-occlusion
+  darkening in the slots. Lighting: dark gradient studio, hard sun, a big key light and thin rim strips, a dark
+  shadow-catcher floor under the loop; transparent film flattened on white by the encoder, which also draws the thin
+  grey frame behind the loop.
 - **Props**: (v2) machined rings (lathe profiles with chamfers and grooves, glowing green inlays, tick-marked
   base, green core and an orbiting sphere); stacked brushed-metal and engraved green-glass plates on posts
   with a glowing layer; a bar sculpture whose stacked blocks are sized by the real crisis losses (2022 in
