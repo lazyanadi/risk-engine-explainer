@@ -89,7 +89,7 @@ npm run posters                                                                 
 $env:RE_MODE="final"; $env:RE_ONLY="dice,traffic,pillars,coindark"; & $bl -b --factory-startup blender\v3_props.blend --python blender\v2_render.py
 node scripts\posters.mjs blender\renders assets\v3 dice,traffic,pillars,coindark
 # v6 hero (current): square bar, panels on all four faces, two travelling champagne wave fronts
-& blender\v6_loop.cmd                                                              # 144 frames -> C:\Jarvis\tmp\v6-loop (resumable)
+& blender\v6_loop.cmd                                                              # 144 frames -> <frames-folder> (resumable; set in v6_loop.cmd)
 node scripts\encode_loop_v5.mjs <frames-folder> assets/v6                          # -> hero-loop.webm/.mp4 + poster (needs ffmpeg)
 # (blender\v4_hero.py = earlier tiled bar, blender\v5_hero.py = single-wave ribbon; both kept for reference)
 npm run check:assets                                                              # fails if any image/video is used twice
