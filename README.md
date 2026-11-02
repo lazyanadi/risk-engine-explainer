@@ -14,9 +14,10 @@ The page is designed as one continuous story that **opens in the dark and ends i
   soft bokeh and light streaks.
 - Scrolling melts the wave into a blurred field, then black-and-white blocks, then a checkerboard that
   refines and wipes away to a bright white page.
-- On the white page, a thick square-section bar twisting into an infinity shape, modelled and rendered in
-  Blender, is covered in a fine tile grid. A scatter wave travels once around the whole loop, lifting tiles
-  off and letting them settle flush again, in a seamless 6-second video.
+- On the white page, a polished silver ribbon looping into an infinity shape, modelled and rendered in Blender:
+  a mirror outside, a deep coffered grid cut into the inside, thick in the foreground and tapering away, with a
+  hard shadow and a thin grey frame behind it. It is a still image (`blender/v5_hero.py`, two passes: `v5_final.cmd`
+  and `v5_shadow.cmd`, layered).
 - Underneath sits the full explainer, in a clean editorial style of hairline rows, pill buttons and grey cards.
 
 Colour carries meaning throughout: **green is a normal day, inside the line; orange is the tail, the worst days.**

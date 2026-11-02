@@ -20,10 +20,10 @@ const cio = new IntersectionObserver(es => es.forEach(e => {
 }), { threshold: 0.4 });
 $$("[data-num]").forEach(el => cio.observe(el));
 
-/* ---------- hero: the loop stays fixed in place; a calm pre-rendered Blender loop plays over the
-   poster (muted, looping, inline). Reduced motion or a failed video keeps the poster. ---------- */
+/* ---------- hero: the loop stays fixed in place. The hero is a still Blender render; if #heroVisual carries
+   data-webm / data-mp4 a calm pre-rendered loop plays over it (muted, looping, inline). ---------- */
 const vis = $("#heroVisual");
-if (vis && !reduce) {
+if (vis && !reduce && vis.dataset.webm) {
   const v = document.createElement("video");
   v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true;
   v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("aria-hidden", "true");
