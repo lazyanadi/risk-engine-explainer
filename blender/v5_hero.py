@@ -31,7 +31,9 @@ NROW = 4            # grid panels across the belt (inner face)
 GU, GV = 20, 14     # mesh samples per panel along / across
 OUT_N = 12          # samples across the outer face
 RC = 3              # samples per rounded corner
-NPAN = float(E("RE_PANELS", "44"))   # approx. panels round the whole loop
+NPAN = float(E("RE_PANELS", "80"))
+HW = float(E("RE_HW", "0.36"))   # half the belt width (the nearest lobe)
+TH = float(E("RE_TH", "0.56"))   # belt thickness: about the same as the old square bar   # approx. panels round the whole loop
 GROOVE_W = 0.70     # groove starts at this fraction of the half-panel
 SIGN = float(E("RE_SIDE", "1"))       # +1: mirror on the +side normal, -1: swap sides
 
@@ -48,7 +50,8 @@ def centre(t):
 def taper(t):
     """1 on the near left lobe (t = 3pi/2), ~0.26 on the far right (t = pi/2); smooth and periodic."""
     w = 0.5 - 0.5 * math.sin(t)
-    return 0.26 + 0.74 * w ** 1.25
+    f = float(E("RE_TAPER", "0.7"))
+    return f + (1 - f) * w ** 1.25
 
 
 def frame(t, eps=1e-4):
@@ -137,13 +140,16 @@ def profile(hw, th, r):
     return P
 
 
+ANIM = {}
+
+
 def build_ribbon(coll, mats):
     ts, s = arc_table()
     total = s[-1]
     # ring positions: uniform in panel units, so panels stay square as the belt narrows
     xs = np.linspace(0, total, 6000)
     tt = np.interp(xs, s, ts)
-    plen0 = np.array([2 * 0.5 * taper(t) / NROW for t in tt])
+    plen0 = np.array([2 * HW * taper(t) / NROW for t in tt])
     cum = np.concatenate([[0], np.cumsum(np.diff(xs) / ((plen0[1:] + plen0[:-1]) / 2))])
     npan = max(1, round(NPAN * cum[-1] / cum[-1]))   # keep the requested count
     cum *= npan / cum[-1]                             # integer number of panels closes the grid
@@ -152,21 +158,27 @@ def build_ribbon(coll, mats):
     ring_x = np.interp(ring_u, cum, xs)
     ring_t = np.interp(ring_x, s, ts)
     verts, nP = [], None
+    A_dir, A_wt, A_pu, A_pv, A_k = [], [], [], [], []
     for i in range(nring):
         t = float(ring_t[i])
         c = centre(t)
         T, side, up = frame(t)
         k = taper(t)
-        hw, th, r = 0.50 * k, 0.27 * k, 0.014 * k
+        hw, th, r = HW * k, TH * k, 0.025 * k
         P = profile(hw, th, r)
         nP = len(P)
         u = ring_u[i] + 0.5
         for lat, ht, inner, pv in P:
+            wt, pu, pvi = 0.0, 0, 0
             if inner:
                 v = pv * NROW + 0.5
                 depth = th * 0.64 * (1 - (1 - groove(u)) * (1 - groove(v)))
                 lat = lat + depth
+                if 0 < pv < 1:      # the belt edges stay pinned; every panel in between can move
+                    wt = (1 - groove(u)) * (1 - groove(v))
+                pu, pvi = int(math.floor(u)) % npan, min(NROW, int(math.floor(v)))
             verts.append(c + side * lat + up * ht)
+            A_dir.append(tuple(side)); A_wt.append(wt); A_pu.append(pu); A_pv.append(pvi); A_k.append(k)
     P = profile(0.5, 0.27, 0.014)
     inner_flags = [p[2] for p in P]
     faces, fmat, smooth = [], [], []
@@ -186,8 +198,34 @@ def build_ribbon(coll, mats):
     ob = L.mesh_obj("RE5_Ribbon", V, faces, coll, mats, fmat, None, smooth=True)
     ob.data.polygons.foreach_set("use_smooth", np.array(smooth, bool))
     ob.data.update()
+    R = np.array(rot)
+    ANIM.update(ob=ob, V0=V, DIR=(R @ np.array(A_dir).T).T, WT=np.array(A_wt), PU=np.array(A_pu), PV=np.array(A_pv),
+                K=np.array(A_k), tc=ring_t[::GU].copy(), npan=npan)
     print("ribbon", len(V), "verts", npan, "panels", total, "length")
     return ob, V
+
+
+# ------------------------------------------------------------------ the travelling pop wave
+SIG = float(E("RE_SIG", "0.9"))
+POP = float(E("RE_POP", "0.26"))   # how far a panel lifts out, as a fraction of the local belt scale
+
+
+def wave(ph):
+    """Move every panel for loop phase ph (0..tau). Panels near the wave front pop out to different heights (a few
+    sink in instead) and settle flush again behind it. The loop never moves."""
+    npan = ANIM["npan"]
+    rnd = np.random.default_rng(9)
+    r1, r2, r3 = rnd.random((3, npan, NROW + 1))
+    vn = np.arange(NROW + 1) / NROW * 2 - 1
+    d = (ANIM["tc"][:, None] - ph + 0.35 * (r1 - 0.5) + 0.12 * vn[None, :] + math.pi) % TAU - math.pi
+    k = np.exp(-(d / SIG) ** 2) * (0.55 + 0.9 * r2)
+    k = np.where(k < 0.08, 0.0, k)
+    Hh = np.where(r3 < 0.28, -0.42 * k, k) * POP          # r3 < 0.28: sinks instead of popping
+    disp = Hh[ANIM["PU"], ANIM["PV"]] * ANIM["K"] * ANIM["WT"]
+    V = ANIM["V0"] - ANIM["DIR"] * disp[:, None]
+    me = ANIM["ob"].data
+    me.vertices.foreach_set("co", V.astype(np.float32).ravel())
+    me.update()
 
 
 # ------------------------------------------------------------------ studio
@@ -367,7 +405,8 @@ def scene():
     zmin, zmax = V[:, 2].min(), V[:, 2].max()
     fz = studio(coll, zmin, zmax)
     cam, zfar = camera_fit(coll, V)
-    frame_rect(coll, cam, zfar + float(E("RE_FRAMEGAP", "1.4")))
+    if E("RE_NOFRAME", "0") != "1":      # the loop video gets its frame from the encoder, under the render
+        frame_rect(coll, cam, zfar + float(E("RE_FRAMEGAP", "1.4")))
     print("bbox z", zmin, zmax, "x", V[:, 0].min(), V[:, 0].max(), "y", V[:, 1].min(), V[:, 1].max())
 
 
@@ -376,11 +415,23 @@ if MODE == "build":
     bpy.ops.wm.save_as_mainfile(filepath=os.path.join(HERE, "v5_hero.blend"))
     print("saved v5_hero.blend")
 else:
-    if MODE == "both":
+    if MODE in ("both", "loop"):
         scene()
     render_settings(float(E("RE_SCALE", "1.0")), int(E("RE_SAMPLES", "128")))
-    out = E("RE_OUT", r"C:\Jarvis\tmp\v5")
+    out = E("RE_OUT", "C:/Jarvis/tmp/v5-loop" if MODE == "loop" else "C:/Jarvis/tmp/v5")
     os.makedirs(out, exist_ok=True)
-    bpy.context.scene.render.filepath = os.path.join(out, E("RE_NAME", "hero.png"))
-    bpy.ops.render.render(write_still=True)
-    print("rendered", bpy.context.scene.render.filepath)
+    if MODE == "loop":
+        NF = int(E("RE_NFRAMES", "144"))
+        frames = [int(x) for x in E("RE_FRAMES").split(",")] if E("RE_FRAMES") else range(NF)
+        for f in frames:
+            path = os.path.join(out, f"f{f:04d}.png")
+            if os.path.exists(path):
+                continue
+            wave(TAU * f / NF)
+            bpy.context.scene.render.filepath = path
+            bpy.ops.render.render(write_still=True)
+            print("frame", f, flush=True)
+    else:
+        bpy.context.scene.render.filepath = os.path.join(out, E("RE_NAME", "hero.png"))
+        bpy.ops.render.render(write_still=True)
+        print("rendered", bpy.context.scene.render.filepath)
